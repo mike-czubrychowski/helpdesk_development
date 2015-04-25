@@ -1,0 +1,74 @@
+<div class="row">
+	<div class = "col-md-8 col-xs-12">
+		<h1>store_tills</h1>
+	</div>
+	<div class = "col-md-4 col-xs-12">
+		<h2>
+			<% if can? :create, @store_tills %>
+		        <%= link_to new_store_till_path, :class => 'btn btn-primary', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+		            <i class ="fa fa-plus"></i>
+		        <% end -%>
+		    <% end %>
+		</h2>
+	</div>
+</div>
+
+<div class="row">
+	<table class="table table-striped table-responsive" id ="store_tills" >
+	  <thead>
+	    <tr>
+		    	<th>Name</th>
+		    	<th>Location</th>
+		    	<th>Model</th>
+		    	<th>Ip</th>
+		    	<th>Comms support</th>
+		    	<th>Mid</th>
+		    	<th>Ped user</th>
+		    	<th>Ped pin</th>
+		    	<th>Pos keyboard</th>
+		      	<th></th>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+	    <% @store_tills.each do |store_till| %>
+	      <tr>
+		        <td><%= store_till.name %></td>
+		        <td><%= store_till.location %></td>
+		        <td><%= store_till.modelname %></td>
+		        <td><%= store_till.ip %></td>
+		        <td><%= store_till.comms_support %></td>
+		        <td><%= store_till.mid %></td>
+		        <td><%= store_till.ped_user %></td>
+		        <td><%= store_till.ped_pin %></td>
+		        <td><%= store_till.pos_keyboard %></td>
+	
+	        <td>
+	        	<% if can? :read, @store_till %>
+		            <%= link_to store_till_path(@store_till), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+		              <i class ="fa fa-eye"></i>
+		            <% end -%>
+		        <% end %>
+		        <% if can? :edit, @store_till %>
+		            <%= link_to edit_store_till_path(@store_till), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+		              <i class ="fa fa-edit"></i>
+		            <% end -%>
+		        <% end %>
+		        <% if can? :destroy, @store_till %>
+				    <%= link_to store_till_path(@store_till), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-primary btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
+				      <i class ="fa fa-times"></i>
+				    <% end -%>
+				<% end %>
+	        
+
+	        </td>
+	        
+	      </tr>
+	    <% end %>
+	  </tbody>
+	</table>
+</div>
+<br>
+<br>
+
+<%= link_to 'New Till', new_store_till_path %>

@@ -1,0 +1,35 @@
+<%= bootstrap_form_for(@person) do |f| %>
+  <% if @person.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@person.errors.count, "error") %> prohibited this person from being saved:</h2>
+
+      <ul>
+      <% @person.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  
+    <%= f.collection_select :store_details_id, @store_details, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %>
+  
+    <%= f.date_select :startdate %>
+  
+    <%= f.date_select :leavedate %>
+  
+    <%= f.number_field :title %>
+  
+    <%= f.text_field :firstname %>
+  
+    <%= f.text_field :lastname %>
+  
+    <%= f.text_field :preferredname %>
+  
+    <%= f.text_field :jobtitle %>
+  
+    <%= f.text_field :phone %>
+  
+    <%= f.text_field :email %>
+  <%= f.submit %>
+<% end %>

@@ -1,0 +1,49 @@
+<%= bootstrap_form_for(@store_detail) do |f| %>
+  <% if @store_detail.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@store_detail.errors.count, "error") %> prohibited this store_detail from being saved:</h2>
+
+      <ul>
+      <% @store_detail.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  
+    <%= f.text_field :name %>
+  
+    <%= f.collection_select :location_id, @locations, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %>
+  
+    <%= f.text_field :account %>
+  
+    <%= f.text_field :status %>
+  
+    <%= f.date_select :openingday %>
+  
+    <%= f.text_field :address1 %>
+  
+    <%= f.text_field :address2 %>
+  
+    <%= f.text_field :address3 %>
+  
+    <%= f.text_field :town %>
+  
+    <%= f.text_field :county %>
+  
+    <%= f.text_field :postcode %>
+  
+    <%= f.text_field :phone %>
+  
+    <%= f.text_field :uk_country %>
+  
+    <%= f.check_box :centreofexcellence %>
+  
+    <%= f.check_box :superleague %>
+  
+    <%= f.text_field :latitude %>
+  
+    <%= f.text_field :longitude %>
+  <%= f.submit %>
+<% end %>

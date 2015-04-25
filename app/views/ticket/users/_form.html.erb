@@ -1,0 +1,19 @@
+<%= bootstrap_form_for(@ticket_user) do |f| %>
+  <% if @ticket_user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@ticket_user.errors.count, "error") %> prohibited this ticket_user from being saved:</h2>
+
+      <ul>
+      <% @ticket_user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  
+    <%= f.collection_select :detail_id, @details, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %>
+  
+    <%= f.collection_select :user_id, @users, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %>
+  <%= f.submit %>
+<% end %>

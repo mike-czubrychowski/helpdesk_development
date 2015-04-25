@@ -1,0 +1,63 @@
+<p id="notice"><%= notice %></p>
+
+<div class = "col-md-12">
+  <h1><%= @location.name %></h1>
+
+  
+  <div class = "row">
+    <div class = "col-md-3">
+      <p><% @location.ancestors.each do |ancestor| %>
+          <%= link_if_you_can(:read, ancestor) %> / 
+        <% end %>
+        <%= @location.name %>
+      <p>
+
+
+        
+      <% @location.children.each do |child| %>
+        <p><%= link_if_you_can(:read, child) %></p> 
+      <% end %>
+      
+    </div>
+
+    <div class = "col-md-3">
+      <p>
+        <strong>Manager:</strong>
+        <%= link_if_you_can(:read, @location.manager) %> 
+      </p>
+
+        <% if @location.manager %>
+          <%@location.manager.sublocations.employees.each do |sublocation| %>
+            <p><strong><%= link_if_you_can(:read, sublocation) %></strong></p>
+            <% sublocation.people.each do |employee| %>
+              <p><%= link_if_you_can(:read, employee) %></p>
+            <% end %>
+          <% end%>
+        <% end %>
+      
+    </div>
+  </div>
+
+  <div class = "row">
+    <div class = "col-md-12">
+      <% if @ticket_details.count > 0 %>
+        <%= render :partial => 'ticket/details/indexlist' %>
+      <% else %>
+        <p>No Open Tickets</p>
+      <% end %>
+      <%= link_to 'New Ticket', new_ticket_detail_path(:location_id => @location.id) %>
+      
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+<%= link_to locations_path do %><i class ="fa fa-arrow-left"></i><% end -%>
+<%= link_if_you_can(:edit, @location, 'fa fa-pencil') %> | 
+<%= link_if_you_can(:destroy, @location, 'fa fa-times') %>

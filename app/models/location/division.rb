@@ -1,0 +1,2 @@
+class Division < Location
+end

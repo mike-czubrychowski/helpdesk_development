@@ -1,0 +1,34 @@
+<table class="table table-striped table-responsive" id ="ticket_comments" >
+  <thead>
+    <tr>
+    	<th>Name</th>
+    	<th>Description</th>
+    	<th>Type</th>
+    	<th>Created by</th>
+      	<th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ticket_comments.each do |ticket_comment| %>
+      <tr>
+	        <td><%= ticket_comment.name %></td>
+	        <td><%= ticket_comment.description %></td>
+	        <td><%= ticket_comment.comment_type %></td>
+	        <td><%= ticket_comment.created_by %></td>
+
+
+        <td>
+ 
+	        <%= link_if_you_can(:read, ticket_comment, 'fa fa-eye') %>
+	        <%= link_if_you_can(:edit, ticket_comment, 'fa fa-pencil') %>
+	        <%= link_if_you_can(:destroy, ticket_comment, 'fa fa-times') %>
+	        
+
+
+        </td>
+        
+      </tr>
+    <% end %>
+  </tbody>
+</table>

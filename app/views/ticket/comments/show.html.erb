@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Detail:</strong>
+  <%= @ticket_comment.detail %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @ticket_comment.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @ticket_comment.description %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @ticket_comment.type %>
+</p>
+
+<p>
+  <strong>Created by:</strong>
+  <%= @ticket_comment.created_by %>
+</p>
+
+<p>
+  <strong>Updated by:</strong>
+  <%= @ticket_comment.updated_by %>
+</p>
+
+<%= link_to ticket_comments_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
+<%= link_if_you_can(:edit, @ticket_comment, 'fa fa-pencil') %> |
+<%= link_if_you_can(:destroy, @ticket_comment, 'fa fa-times') %>

@@ -1,0 +1,28 @@
+<%%= bootstrap_form_for(@<%= singular_table_name %>) do |f| %>
+  <%% if @<%= singular_table_name %>.errors.any? %>
+    <div id="error_explanation">
+      <h2><%%= pluralize(@<%= singular_table_name %>.errors.count, "error") %> prohibited this <%= singular_table_name %> from being saved:</h2>
+
+      <ul>
+      <%% @<%= singular_table_name %>.errors.full_messages.each do |message| %>
+        <li><%%= message %></li>
+      <%% end %>
+      </ul>
+    </div>
+  <%% end %>
+
+<% attributes.each do |attribute| -%>
+  
+<% if attribute.password_digest? -%>
+    <%%= f.password_field :password %>
+    <%%= f.password_field :password_confirmation %>
+<% else -%>
+  <%- if attribute.reference? -%>
+    <%%= f.collection_select :<%= attribute.column_name %>, @<%= attribute.name.pluralize(2) %>, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %>
+  <%- else -%>
+    <%%= f.<%= attribute.field_type %> :<%= attribute.name %> %>
+  <%- end -%>
+<% end -%>
+<% end -%>
+  <%%= f.submit %>
+<%% end %>

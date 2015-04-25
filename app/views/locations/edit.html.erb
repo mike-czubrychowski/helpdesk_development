@@ -1,0 +1,7 @@
+<h1>Edit location</h1>
+
+<%= render 'form' %>
+
+<%= link_to locations_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
+<%= link_if_you_can(:read, @location, 'fa fa-pencil') %> | 
+<%= link_if_you_can(:destroy, @location, 'fa fa-times') %>

@@ -1,0 +1,56 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @ticket_detail.location_name %>
+</p>
+
+<p>
+  <strong>Parent:</strong>
+  <%= @ticket_detail.parent %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @ticket_detail.ticket_type %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @ticket_detail.ticket_category_name %>
+</p>
+
+<p>
+  <strong>Subcategory:</strong>
+  <%= @ticket_detail.ticket_subcategory_name %>
+</p>
+
+<p>
+  <strong>Priority:</strong>
+  <%= @ticket_detail.ticket_priority %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @ticket_detail.ticket_status_name %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @ticket_detail.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @ticket_detail.description %>
+</p>
+
+<p>
+  <strong>Created by:</strong>
+  <%= @ticket_detail.created_by_name %>
+</p>
+
+
+<%= link_to ticket_details_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
+<%= link_if_you_can(:edit, @ticket_detail, 'fa fa-pencil') %> |
+<%= link_if_you_can(:destroy, @ticket_detail, 'fa fa-times') %>

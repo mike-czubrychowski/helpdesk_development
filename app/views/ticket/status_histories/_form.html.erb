@@ -1,0 +1,25 @@
+<%= bootstrap_form_for(@ticket_status_history) do |f| %>
+  <% if @ticket_status_history.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@ticket_status_history.errors.count, "error") %> prohibited this ticket_status_history from being saved:</h2>
+
+      <ul>
+      <% @ticket_status_history.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  
+    <%= f.collection_select :detail_id, @details, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %>
+  
+    <%= f.collection_select :status_id, @statuses, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %>
+  
+    <%= f.date_select :from %>
+  
+    <%= f.date_select :to %>
+  
+    <%= f.collection_select :updated_by_id, @updated_bies, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %>
+  <%= f.submit %>
+<% end %>

@@ -1,0 +1,110 @@
+//colors
+$white: #fff;
+$color_cadet_blue_approx: #aab2bd;
+$color_gray_nurse_approx: #eaeaea;
+$color_pink_swan_approx: #bbbbbb;
+$color_black_haze_approx: #f6f6f6;
+$wild_sand: #f4f4f4;
+$color_alabaster_approx: #f9f9f9;
+
+//@extend-elements
+//original selectors
+//.tasks-widget .task-footer:after, .tasks-widget .task-footer:before
+%extend_1 {
+	content: "";
+	display: table;
+	line-height: 0;
+}
+
+
+.task-content {
+	margin-bottom: 30px;
+}
+.task-panel {
+	background: $white;
+	text-align: left;
+	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 3px 2px $color_cadet_blue_approx;
+	margin: 5px;
+}
+.tasks-widget {
+	.task-footer {
+		margin-top: 5px;
+		&:after {
+			@extend %extend_1;
+			clear: both;
+		}
+		&:before {
+			@extend %extend_1;
+		}
+	}
+	.task-list {
+		padding: 0;
+		margin: 0;
+		li {
+			&.last-line {
+				border-bottom: none;
+			}
+			> {
+				.task-bell {
+					margin-left: 10px;
+				}
+				.task-checkbox {
+					float: left;
+					width: 30px;
+				}
+				.task-title {
+					overflow: hidden;
+					margin-right: 10px;
+				}
+				.task-config {
+					position: absolute;
+					top: 10px;
+					right: 10px;
+				}
+			}
+			&.task-done {
+				background: $color_black_haze_approx;
+				.task-title-sp {
+					text-decoration: line-through;
+					color: $color_pink_swan_approx;
+				}
+				&:hover {
+					background: $wild_sand;
+				}
+			}
+			&:hover {
+				background: $color_alabaster_approx;
+				> .task-config {
+					display: block;
+					margin-bottom: 0 !important;
+				}
+			}
+			.task-config {
+				display: none;
+			}
+			.task-title .task-title-sp {
+				margin-right: 5px;
+			}
+		}
+		> li {
+			position: relative;
+			padding: 10px 5px;
+			border-bottom: 1px dashed $color_gray_nurse_approx;
+		}
+	}
+	.task-content:after {
+		clear: both;
+	}
+}
+@media only screen and(max-width: 320px) {
+	.tasks-widget {
+		.task-config-btn {
+			float: inherit;
+			display: block;
+		}
+		.task-list-projects li > .label {
+			margin-bottom: 5px;
+		}
+	}
+}

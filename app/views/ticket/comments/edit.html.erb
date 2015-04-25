@@ -1,0 +1,8 @@
+<h1>Edit Comment</h1>
+
+<%= render 'form' %>
+
+<%= link_to ticket_comments_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
+<%= link_if_you_can(:read, @ticket_comment, 'fa fa-eye') %> | 
+<%= link_if_you_can(:destroy, @ticket_comment, 'fa fa-times') %>
+

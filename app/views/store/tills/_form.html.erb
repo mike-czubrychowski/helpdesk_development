@@ -1,0 +1,33 @@
+<%= bootstrap_form_for(@store_till) do |f| %>
+  <% if @store_till.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@store_till.errors.count, "error") %> prohibited this store_till from being saved:</h2>
+
+      <ul>
+      <% @store_till.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  
+    <%= f.text_field :name %>
+  
+    <%= f.collection_select :location_id, @locations, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %>
+  
+    <%= f.number_field :modelname %>
+  
+    <%= f.text_field :ip %>
+  
+    <%= f.number_field :comms_support %>
+  
+    <%= f.number_field :mid %>
+  
+    <%= f.number_field :ped_user %>
+  
+    <%= f.number_field :ped_pin %>
+  
+    <%= f.text_field :pos_keyboard %>
+  <%= f.submit %>
+<% end %>

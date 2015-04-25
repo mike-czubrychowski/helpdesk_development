@@ -1,0 +1,22 @@
+<table class="table table-striped table-responsive" id ="locations" >
+  <thead>
+    <tr>
+    	<th>Name</th>
+    	<th>Parent</th>
+    	<th>Category</th>
+    	<th>Manager</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @locations.each do |location| %>
+      <tr>
+	        <td><%= link_if_you_can(:read, location) %></td>
+	        <td><%= link_if_you_can(:read, location.parent) %></td>
+	        <td><%= link_to_location_if_you_can(:read, location) %> </td>
+	        <td><%= link_if_you_can(:read, location.manager) %></td>
+	        	
+      </tr>
+    <% end %>
+  </tbody>
+</table>

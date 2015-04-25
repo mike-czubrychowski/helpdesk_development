@@ -1,0 +1,35 @@
+<table class="table table-striped table-responsive" id ="store_tills" >
+  <thead>
+    <tr>
+	      	<th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @store_tills.each do |store_till| %>
+      <tr>
+
+        <td>
+        	<% if can? :read, @store_till %>
+	            <%= link_to store_till_path(@store_till), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+	              <i class ="fa fa-eye"></i>
+	            <% end -%>
+	        <% end %>
+	        <% if can? :edit, @store_till %>
+	            <%= link_to edit_store_till_path(@store_till), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+	              <i class ="fa fa-edit"></i>
+	            <% end -%>
+	        <% end %>
+	        <% if can? :destroy, @store_till %>
+			    <%= link_to store_till_path(@store_till), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-primary btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
+			      <i class ="fa fa-times"></i>
+			    <% end -%>
+			<% end %>
+        
+
+        </td>
+        
+      </tr>
+    <% end %>
+  </tbody>
+</table>

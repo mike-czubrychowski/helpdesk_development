@@ -1,0 +1,357 @@
+== README
+
+Commands run:
+
+	rails _4.1.8_ new helpdesk_development
+	
+
+Update gemfile and database.yml.  
+Create the db and grant privs
+	cd helpdesk_development
+	bundle update
+	rails g rspec:install
+
+Alter application.rb
+	config.generators do |g|
+      g.test_framework :rspec,
+        fixtures:         true,
+        view_specs:       false,
+        helper_specs:     false,
+        routing_specs:    false,
+        controller_specs: true,
+        request_specs:    true
+      g.fixture_replacement :factory_girl, dir: 'spec/factories'
+    end
+
+
+
+
+Install bootstrap; add the gems
+--------------------------------------------
+rails g bootstrap:install
+rails g bootstrap:layout application fluid
+
+Add to application.js
+	//= require jquery
+	//= require jquery_ujs
+	//= require dataTables/jquery.dataTables
+	//= require turbolinks
+	//= require bootstrap-sprockets
+	//= require_tree .
+
+
+Create application.scss and delete application.css
+	// "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+	@import "bootstrap-sprockets";
+	@import "bootstrap";
+	@import "font-awesome";
+	@import "dataTables/jquery.dataTables";
+	@import "style";
+	@import "style-responsive";
+	@import "to-do";
+	@import "linecons";
+
+
+
+Add in the javascript and fonts for the Dashgum library
+
+
+
+
+Setup scaffolds and models
+----------------------------
+
+
+Put new generators into /lib/templates/erb/scaffold
+
+
+Create the scaffolds eg:
+	rails g scaffold Person password:string store_id:integer opslevel:integer firstname:string lastname:string
+	rails g scaffold Store name:string area_id:integer region_id:integer
+Namespaced example:
+	rails g scaffold store/detail name:string location:references
+	
+
+	set the default values in the migration
+		:boolean, :default => false
+
+	Before rake, check the migrations
+	-make sure references are correct
+	rake db:migrate
+
+	now you can set foreign keys in a separate migration called xxxxx_add_foreign_keys.rb
+
+	class AddForeignKeys < ActiveRecord::Migration
+	  def change
+			add_foreign_key(:locations, :users, column: 'manager_id')
+			add_foreign_key(:locations, :locations, column: 'parent_id', dependent: :nullify)
+			add_foreign_key(:store_details, :locations)
+
+
+Create a ticket_statistics view
+
+Update controllers, helpers and views which may use £ symbol. Add this line to the top:
+	#coding: utf-8
+
+Update models
+-for namespaces make sure the relations have :class_name => "Ticket::Details"
+-insert has_many or has_one
+-make sure inverse are specified
+-add delete dependency (:dependent => :destroy)
+-has_paper_trail
+-update config for rails_admin
+-set default scopes, including hidden attribute. eg for regions model:
+	default_scope {includes(:country).where(countries: { hidden: 0 })}
+
+Ancestry
+---------
+
+In order to build the ancestry, the root must have a null parent_id
+-add ancestry:string to locations table and index it.
+-alter locations table to allow nulls for parent id
+-set parent_id to null for location.id = 655
+-bundle exec rails console
+-then do Location.build_ancestry_from_parent_ids!
+
+Dimensions for models
+-----------------
+-specify class name
+	belongs_to :dim_portoforigin, :class_name => "Dim::Portoforigin"
+	http://thagomizer.com/blog/2010/07/04/namespaces.html
+-for each dim field, make a def statement which returns it or is nil on error
+-also for dims in views/controllers replace eg
+	DimPortoforigin.all with:
+	Dim::Portoforigin.all
+-replace eg @stocklot.dim_portoforigin with @stocklot.portoforigin
+
+if using cocoon in Model A for nested Model B:
+	accepts_nested_attributes_for :A, allow_destroy: true
+Also you must permit the params for Model B in Controller A
+and destroy dependents for models
+
+Single Table Inheritance
+---------------------------
+Now this shit gets complex
+
+Define a namespace place in routes.rb:
+
+    resources :locations
+    resources :areas, controller: 'locations', type: 'Area' 
+    resources :regions, controller: 'locations', type: 'Region' 
+
+
+Move submodels, area.rb region.rb etc to subfolder called locations.
+Add this line to config/application.rb:
+	config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**/}')]
+
+This adds in models in subfolders and lets rails find area.rb etc.
+
+
+STI:Model
+--------
+location.rb:
+
+class Location < ActiveRecord::Base
+	self.inheritance_column = :category
+
+	def self.categories
+      %w(Area Region etc)
+    end
+
+Create models for each category in the subfolder:
+area.rb:
+
+class Area < Location; end
+
+STI:Controller
+-----------------
+
+class LocationsController < ApplicationController
+  before_action :set_category
+  ...
+  def index
+    @locations = klass.all
+    respond_with(@locations)
+  end
+  ...
+
+  private
+    def set_location
+      @animal = Location.find(params[:id])
+    end
+
+    def set_category
+     @category = category
+    end
+
+    def category
+      Place::Location.category.include?(params[:type]) ? params[:type] : "Location"
+    end
+
+    def klass
+        category.constantize 
+    end
+
+NOTE ON TABLE IMPORT
+------------------
+Category name must be Proper case. Run this on import:
+	UPDATE locations SET category = Concat(ucase(left(category,1)),right(category,length(category)-1)) 
+ROOT category must be renamed: World
+Store category myst be renamed: Storelocation
+
+
+
+Application layout
+-----------------
+Add this to the <div> before yield in application.html.erb
+<div class="col-md-12" style="padding-top: 60px;">
+
+
+Alter the application layout to include the store/taskbar
+
+
+
+
+
+
+
+Data-Tables
+---------------
+
+For each table, give it an ID.  Then in the controllers coffeescript add:
+
+jQuery ->
+    $('#tablename').dataTable()
+
+One limitation: The thead must have the same number of cols as tds, and each must be a database field.
+
+
+
+
+Devise
+------------
+	rails g devise:install
+	rails g devise user
+	rails g layout:devise bootstrap3
+	rails g devise:views
+	
+	add <%= link_to "Sign In", :new_user_session if current_user.blank? %> to ticket_statistics#index
+	set root to ticket_statistics#index
+
+Before rake:
+	add in all the extra fields and lookups to users table
+
+Put this at the top of Application controller
+	before_filter :authenticate_user!
+
+In config/initializers/devise.rb (requires server restart)
+	config.sign_out_via = :get
+
+Add confirmable
+	https://github.com/plataformatec/devise/wiki/How-To:-Add-:confirmable-to-Use
+
+CanCan
+----------------
+Install Cancan, setup ability so users can only see people in their store
+	bundle install
+	rails g cancan:ability
+Add to each controller, except application controller
+	load_and_authorize_resource
+Add following to application controller (for cancan v2)
+	rescue_from CanCan::AccessDenied do |exception|
+    	redirect_to root_url, :alert => exception.message
+  	end
+
+Create assignments and roles table and model.  
+Add to user model
+	has_many :assignments
+  	has_many :roles, :through => :assignments #this could be has_one
+  	def has_role?(role_sym)
+    	roles.any? { |r| r.name.underscore.to_sym == role_sym }
+  	end
+
+Create the assignment model:
+	class Assignment < ActiveRecord::Base
+
+	  belongs_to :user
+	  belongs_to :role
+	  attr_accessible :user_id, :role_id
+	  validates :user_id, :presence => true, :uniqueness => true 
+	end
+
+Make sure rails admin can add roles to users, i.e. edit the assignments table
+
+Grant these basic abilities for test:
+	can :access, :all
+    can :access, :rails_admin 
+    can :dashboard, :all
+    can :manage, :all
+
+Engineyard
+-----------------
+
+Make /config/ey.yml with the following lines:
+	defaults:
+  	  precompile_assets: true
+  	  ignore_gemfile_lock_warning: true
+In production.rb change this to true
+	config.assets.compile = true
+---------------------------------------------------------
+
+
+Paper trail
+--------------------------------------------------
+gem 'paper_trail', '~> 3.0.6'
+bundle exec rails generate paper_trail:install --with-changes  
+bundle exec rake db:migrate
+
+
+
+Deploy
+-----------------------
+
+After Deploy set the trigger below
+Set the secrets.yml file (Why?!)
+Set precompile_assets true in ey.yml
+Add to application.rb
+	config.assets.enabled = true
+    config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
+    config.assets.version = '1.0'
+    config.encoding = "utf-8"
+    config.filter_parameters += [:password]
+
+
+SQL for Location's table
+-------------------------
+
+	SELECT 
+	   l.[LocationID] as id
+	  ,l.[ParentID] as parent_id
+	  ,LOWER(l.[LocationLevelName]) as category
+	  ,[LocationLevel] as level
+	  ,l.[LocationCode] as code
+	  ,l.[LocationName] as name
+	  ,m.PersonID
+
+	FROM [CN_MAIN].[dbo].[Operation_CurrentList] l
+	Join [CN_MAIN].[dbo].[Operation_Manager_CurrentList] m
+	ON l.LocationCode = m.LocationCode
+	ORDER BY LocationID
+
+
+TO DO
+
+	
+	- Finish off lookup definitions, validations and scopes before you do more tables
+	- Make Ticket view and Stores.
+		- Consider what to do when you have eg no open tickets, you need to partially render the view to show headers?
+	- Include Manager IDs for Stores
+	- Work out STI
+	- Work out how to do managers, employee lists and such
+	- Foreign Key Migrations
+	- Write helper methods for ability encapsulated links 1/2
+		-destroy not working
+	- Define Lookups for all controllers
+	- Strong Parameters for each controller
+	- update db config for ancestry
+

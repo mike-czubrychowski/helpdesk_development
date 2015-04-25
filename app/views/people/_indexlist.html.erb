@@ -1,0 +1,26 @@
+<table class="table table-striped table-responsive" id ="people" >
+  <thead>
+    <tr>
+	
+	 
+	 
+    	<th>Name</th>
+    	<th>Store</th>
+    	<th>Jobtitle</th>
+    	<th>Phone</th>
+	   
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @people.each do |person| %>
+      <tr>
+	        <td><%= link_if_you_can(:read, person) %></td>
+	        <td><%= link_if_you_can(:read, person.store_detail) %></td>
+	        	
+	        <td><%= person.jobtitle %></td>
+	        <td><%= person.phone %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

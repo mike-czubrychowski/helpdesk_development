@@ -1,0 +1,15 @@
+<h1>Edit role</h1>
+
+<%= render 'form' %>
+
+<%= link_to roles_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
+<% if can? :read, @role %>
+    <%= link_to role_path(@role), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+      <i class ="fa fa-eye"></i>
+    <% end -%>
+<% end %>
+<% if can? :destroy, @role %>
+    <%= link_to role_path(@role), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-primary btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
+      <i class ="fa fa-times"></i>
+    <% end -%>
+<% end %>

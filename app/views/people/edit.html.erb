@@ -1,0 +1,7 @@
+<h1>Edit person</h1>
+
+<%= render 'form' %>
+
+<%= link_to people_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
+<%= link_if_you_can(:read, @person, 'fa fa-eye') %> |
+<%= link_if_you_can(:destroy, @person, 'fa fa-times') %>

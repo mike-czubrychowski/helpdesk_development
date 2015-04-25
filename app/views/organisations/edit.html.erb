@@ -1,0 +1,15 @@
+<h1>Edit organisation</h1>
+
+<%= render 'form' %>
+
+<%= link_to organisations_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
+<% if can? :read, @organisation %>
+    <%= link_to organisation_path(@organisation), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+      <i class ="fa fa-eye"></i>
+    <% end -%>
+<% end %>
+<% if can? :destroy, @organisation %>
+    <%= link_to organisation_path(@organisation), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-primary btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
+      <i class ="fa fa-times"></i>
+    <% end -%>
+<% end %>

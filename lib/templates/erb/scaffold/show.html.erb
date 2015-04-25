@@ -1,0 +1,20 @@
+<p id="notice"><%%= notice %></p>
+
+<% attributes.reject(&:password_digest?).each do |attribute| -%>
+<p>
+  <strong><%= attribute.human_name %>:</strong>
+  <%%= @<%= singular_table_name %>.<%= attribute.name %> %>
+</p>
+
+<% end -%>
+<%%= link_to <%= index_helper %>_path do %><i class ="fa fa-arrow-left"></i><%% end -%> |
+<%% if can? :edit, @<%= singular_table_name %> %>
+    <%%= link_to edit_<%= singular_table_name %>_path(@<%= singular_table_name %>), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+      <i class ="fa fa-edit"></i>
+    <%% end -%>
+<%% end %>
+<%% if can? :destroy, @<%= singular_table_name %> %>
+    <%%= link_to <%= singular_table_name %>_path(@<%= singular_table_name %>), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-primary btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
+      <i class ="fa fa-times"></i>
+    <%% end -%>
+<%% end %>

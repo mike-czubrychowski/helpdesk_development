@@ -1,0 +1,191 @@
+//colors
+$color_alto_approx: #dddddd;
+$white: #ffffff;
+
+//@extend-elements
+//original selectors
+//div.zabuto_calendar .badge-today, div.zabuto_calendar div.legend span.badge-today
+%extend_1 {
+	background-color: ;
+	color: $white;
+	//Instead of the line below you could use @includetext-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	text-shadow: none;
+}
+
+//original selectors
+//div.zabuto_calendar .badge-event, div.zabuto_calendar div.legend span.badge-event
+%extend_2 {
+	background-color: ;
+	color: $white;
+	//Instead of the line below you could use @includetext-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	text-shadow: none;
+}
+
+
+.calendar-month-header {
+	font-size: 116%!important;
+	th {
+		font-weight: 600!important;
+	}
+}
+@media(max-width: 979px) {
+	div.zabuto_calendar .table {
+		th {
+			padding: 2px 1px;
+		}
+		td {
+			padding: 2px 1px;
+		}
+	}
+}
+div.zabuto_calendar {
+	margin: 0;
+	padding: 10px;
+	.table {
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		th {
+			padding: 11.9px 0;
+			text-align: center;
+		}
+		td {
+			padding: 11.9px 0;
+			text-align: center;
+		}
+		tr {
+			th {
+				background-color: ;
+			}
+			td {
+				background-color: ;
+				&.dow-clickable {
+					cursor: pointer;
+				}
+				&.event-clickable {
+					cursor: pointer;
+				}
+				div.day {
+					margin: 0;
+					padding-top: 0;
+					padding-bottom: 0;
+				}
+				&.event div.day {
+					background-color: ;
+				}
+			}
+			&:last-child {
+				border-bottom: 0 solid $color_alto_approx;
+			}
+			&.calendar-month-header th {
+				background-color: ;
+				padding: 10px;
+				span {
+					cursor: pointer;
+					display: inline-block;
+					padding-bottom: 0;
+				}
+			}
+			&.calendar-dow-header th {
+				background-color: ;
+			}
+		}
+	}
+	div {
+		&.calendar-month-navigation {
+			cursor: pointer;
+			margin: 0;
+			padding: 0;
+			padding-top: 0;
+		}
+		&.legend {
+			margin-top: 15px;
+			text-align: right;
+			padding-right: 10px;
+			padding-bottom: 10px;
+			span {
+				font-size: 10px;
+				font-weight: normal;
+				&.badge-today {
+					@extend %extend_1;
+				}
+				&.badge-event {
+					@extend %extend_2;
+				}
+				&.legend-spacer {
+					padding-left: 25px;
+					&:after {
+						content: ' ';
+					}
+				}
+				&.badge {
+					font-size: 0.9em;
+					//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+					border-radius: 5px 5px 5px 5px;
+					padding-left: 5px;
+					padding-right: 5px;
+					padding-top: 2px;
+					padding-bottom: 3px;
+				}
+				&.legend-text:after {
+					content: ' ';
+				}
+				&.legend-block:after {
+					content: ' ';
+				}
+				&.legend-list:after {
+					content: ' ';
+				}
+			}
+		}
+	}
+	tr {
+		&.calendar-dow-header th {
+			width: 14%;
+		}
+		&.calendar-dow td {
+			width: 14%;
+		}
+	}
+	.badge-today {
+		@extend %extend_1;
+	}
+	.badge-event {
+		@extend %extend_2;
+		font-size: 0.95em;
+		padding-left: 8px;
+		padding-right: 8px;
+		padding-bottom: 4px;
+	}
+	.table-bordered tr.calendar-month-header th {
+		border-left: 0;
+		border-right: 0;
+		&:first-child {
+			border-left: 0 solid $color_alto_approx;
+		}
+	}
+	ul.legend {
+		display: inline-block;
+		list-style: none outside none;
+		margin: 0;
+		padding: 0;
+		li {
+			display: inline-block;
+			height: 8px;
+			width: 8px;
+			margin-left: 5px;
+			&.event {
+				background-color: ;
+			}
+			&:last-child {
+				margin-right: 5px;
+			}
+		}
+		> span {
+			padding-left: 2px;
+		}
+		div.zabuto_calendar ul.legend li:first-child {
+			margin-left: 7px;
+		}
+	}
+}

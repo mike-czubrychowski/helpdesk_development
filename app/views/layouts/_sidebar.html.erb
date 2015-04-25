@@ -1,0 +1,57 @@
+<!--sidebar start-->
+<aside>
+    <div id="sidebar"  class="nav-collapse ">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+        
+            <p class="centered"><a href="profile.html"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+            <h5 class="centered">Current User</h5>
+              
+            <li class="mt">
+                <%= link_to root_path do %>
+                    <i class="fa fa-dashboard"></i>
+                    <span>Dashboard</span>
+                <% end %>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-building"></i>
+                    <span>Locations</span>
+                </a>
+                <ul class="sub">
+                    <% Location.categories.each do |category| %>
+                        <% if can? :read, category %><li><%= link_to category.capitalize, [category.downcase.pluralize] %></li><% end %>
+                    <% end %>
+                    <li><a  href="">Regions</a></li>
+                    <li><a  href="">Divisionss</a></li>
+                </ul>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-cogs"></i>
+                    <span>Admin</span>
+                </a>
+                <ul class="sub">
+                    <li><a href="">Ticket Categories</a></li>
+                    <li><a href="">Ticket Sub-Categories</a></li>
+                    <li><a href="">Ticket Statuses</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-user"></i>
+                    <span>People</span>
+                </a>
+                <ul class="sub">
+                    <li><%= link_to 'People', people_path %></li>
+                    <li><%= link_to 'Organisations', organisations_path %></li>
+                </ul>
+            </li>
+        </ul>
+        <!-- sidebar menu end-->
+    </div>
+</aside>
+<!--sidebar end-->
+

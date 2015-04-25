@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @ticket_status.name %>
+</p>
+
+<p>
+  <strong>Order:</strong>
+  <%= @ticket_status.order %>
+</p>
+
+<p>
+  <strong>Time tracked:</strong>
+  <%= @ticket_status.time_tracked %>
+</p>
+
+<%= link_to ticket_statuses_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
+<%= link_if_you_can(:edit, @ticket_status, 'fa fa-eye') %> | 
+<%= link_if_you_can(:destroy, @ticket_status, 'fa fa-times') %>
+

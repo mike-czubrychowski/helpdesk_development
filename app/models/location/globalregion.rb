@@ -1,0 +1,2 @@
+class Globalregion < Location
+end
