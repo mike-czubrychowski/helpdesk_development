@@ -5,16 +5,13 @@ class Ticket::SubcategoriesController < ApplicationController
 
   def index
     @ticket_subcategories = Ticket::Subcategory.all
-    respond_with(@ticket_subcategories)
   end
 
   def show
-    respond_with(@ticket_subcategory)
   end
 
   def new
     @ticket_subcategory = Ticket::Subcategory.new
-    respond_with(@ticket_subcategory)
   end
 
   def edit
@@ -22,13 +19,23 @@ class Ticket::SubcategoriesController < ApplicationController
 
   def create
     @ticket_subcategory = Ticket::Subcategory.new(subcategory_params)
-    @ticket_subcategory.save
-    respond_with(@ticket_subcategory)
+
+    if @ticket_subcategory.save
+      redirect_to @ticket_subcategory, notice: 'Subcategory was successfully created.'
+    else
+      render :new
+    end
+    
   end
 
   def update
-    @ticket_subcategory.update(subcategory_params)
-    respond_with(@ticket_subcategory)
+
+    if @ticket_subcategory.update(subcategory_params)
+      redirect_to @ticket_subcategory, notice: 'Subcategory was successfully updated.'
+    else
+      render :edit
+    end
+  
   end
 
   def destroy
@@ -39,6 +46,7 @@ class Ticket::SubcategoriesController < ApplicationController
   private
     def set_ticket_subcategory
       @ticket_subcategory = Ticket::Subcategory.find(params[:id])
+      @ticket_details = @ticket_subcategory.tickets
     end
 
     def ticket_subcategory_params

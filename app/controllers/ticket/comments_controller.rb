@@ -14,7 +14,7 @@ class Ticket::CommentsController < ApplicationController
 
   # GET /ticket/comments/new
   def new
-    @ticket_comment = Ticket::Comment.new
+    @ticket_comment = Ticket::Comment.new(:ticket_detail_id => params[:ticket_detail_id])
   end
 
   # GET /ticket/comments/1/edit
@@ -51,6 +51,7 @@ class Ticket::CommentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_ticket_comment
       @ticket_comment = Ticket::Comment.find(params[:id])
+      @ticket_detail = Ticket::Detail.find(@ticket_comment.ticket_detail_id)
     end
 
     def set_lookups
@@ -61,6 +62,6 @@ class Ticket::CommentsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def ticket_comment_params
-      params.require(:ticket_comment).permit(:detail_id, :name, :description, :type, :created_by_id, :updated_by_id)
+      params.require(:ticket_comment).permit(:ticket_detail_id, :name, :description, :type, :created_by_id, :updated_by_id)
     end
 end

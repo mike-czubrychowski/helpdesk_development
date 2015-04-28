@@ -22,7 +22,8 @@ Alter application.rb
         request_specs:    true
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
     end
-
+In development.rb set
+	config.assets.debug = false
 
 
 
@@ -340,18 +341,49 @@ SQL for Location's table
 
 
 TO DO
-
 	
+	- Finish off cocoon ticket_user_assignment /
+	- Clarify the employees relation.  Do employees belong to a store, a location or a manager?
+		- To a store?
+	- Link organisations to ticket_categories - ? by assignment or better?
+	- Setup devise
+	- Enable users, and write ability
+		-user.roles = superadmin, helpdesk, thirdparty, employee, customer
 	- Finish off lookup definitions, validations and scopes before you do more tables
-	- Make Ticket view and Stores.
+	- Make Ticket view and Stores. /
 		- Consider what to do when you have eg no open tickets, you need to partially render the view to show headers?
 	- Include Manager IDs for Stores
-	- Work out STI
-	- Work out how to do managers, employee lists and such
+	- Work out STI /
+	- Work out how to do managers, employee lists and such /
 	- Foreign Key Migrations
 	- Write helper methods for ability encapsulated links 1/2
 		-destroy not working
 	- Define Lookups for all controllers
 	- Strong Parameters for each controller
-	- update db config for ancestry
+	- Update db config for ancestry
+		-Work out how to create locations table from business drivers.
+	- Finish off linking for ticket_priority, status/ 
+		-should ticket type and priority also have table and controllers?
+	- Add ticket comment not working
+	- Ticket Type is FAQ (like knowledge base for employees)
+	- Remove ticket_category_id from ticket_detail, and make it a look up through ticket_subcategory
+		-Write JS lookup
+	- Googlemaps
+		- https://binarapps.com/blog/integration-of-googlemaps-in-rails-4/
+		- https://github.com/apneadiving/Google-Maps-for-Rails
+	- SLAs
+		- Time taken will be calculated from the status_notifications, by summing the time tracked items.
+		- SLAs are defined on a per priority, per (sub)category basis.
+		- How do we take account of the clock stopping out of hours? Consider introducing a spoof notification item, for each day the ticket is open, between say 18:00 and 09:00 which is not time tracked and is called OOH.
+	- Dashboard
+		These are localised to your location or category depending on user type
+		- # Unassigned Tickets (i.e. with no user asssignment, where user is in helpdesk group)
+		- # Open Tickets
+		- # Closed Tickets (w/i last day, month, year)
+		- # per Category 
+		- # per Status
+	- Reports
+		- Breakdown by priority / category etc. vs User  Items met within SLA
+		- Breakdown by priortiy / etc vs Location 
+
 

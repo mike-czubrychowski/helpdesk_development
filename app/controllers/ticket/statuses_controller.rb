@@ -8,6 +8,7 @@ class Ticket::StatusesController < ApplicationController
 
   # GET /ticket/statuses/1
   def show
+     
   end
 
   # GET /ticket/statuses/new
@@ -49,6 +50,7 @@ class Ticket::StatusesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_ticket_status
       @ticket_status = Ticket::Status.find(params[:id])
+      @ticket_details = Ticket::Detail.where("ticket_status_id = ?", @ticket_status.id)
     end
 
     # Only allow a trusted parameter "white list" through.

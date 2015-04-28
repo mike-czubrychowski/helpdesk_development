@@ -5,22 +5,28 @@ class Ticket::DetailsController < ApplicationController
 
   # GET /ticket/details
   def index
-    @ticket_details = Ticket::Detail.all
+    @ticket_details = Ticket::Detail.inclusive
   end
 
   # GET /ticket/details/1
   def show
-    @ticket_comments = Ticket::Comment.where("ticket_detail_id = ?", @ticket_detail.id)
+    
   end
 
   # GET /ticket/details/new
   def new
-    @ticket_detail = Ticket::Detail.new(:name => params[:name], :location_id => params[:location_id]) 
+    @ticket_detail = Ticket::Detail.new(:name => params[:name], 
+                                        :location_id => params[:location_id], 
+                                        :ticket_category_id => params[:ticket_category_id],
+                                        :ticket_subcategory_id => params[:ticket_subcategory_id],
+                                        :ticket_status_id => params[:ticket_status_id]
+
+                                        ) 
   end
 
   # GET /ticket/details/1/edit
   def edit
-     @ticket_comments = Ticket::Comment.where("ticket_detail_id = ?", @ticket_detail.id)
+    
   end
 
   # POST /ticket/details
@@ -39,7 +45,7 @@ class Ticket::DetailsController < ApplicationController
   # PATCH/PUT /ticket/details/1
   def update
     if @ticket_detail.update(ticket_detail_params)
-      redirect_to @ticket_detail, notice: 'Detail was successfully updated.'
+      redirect_to edit_ticket_detail_path(@ticket_detail), notice: 'Detail was successfully updated.'
     else
       render :edit
     end
@@ -55,6 +61,7 @@ class Ticket::DetailsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_ticket_detail
       @ticket_detail = Ticket::Detail.find(params[:id])
+      @ticket_comments = Ticket::Comment.where("ticket_detail_id = ?", @ticket_detail.id)
     end
 
     def set_lookups
@@ -66,11 +73,23 @@ class Ticket::DetailsController < ApplicationController
       @parents = Ticket::Detail.all
       @priorities = Ticket::Detail.ticket_priorities.map {|k, v| [k.humanize.capitalize, k]}
       @types =   Ticket::Detail.ticket_types.map {|k, v| [k.humanize.capitalize, k]}
+      @users = User.all
+      
+      if @ticket_detail then
+        @ticket_comments = Ticket::Comment.where("ticket_detail_id = ?", @ticket_detail.id)
+      end
+
+      @ticket_user_assignments = Ticket::UserAssignment.where("ticket_detail_id = ?", @ticket_detail.id)
 
     end
 
     # Only allow a trusted parameter "white list" through.
     def ticket_detail_params
-      params.require(:ticket_detail).permit(:location_id, :parent_id, :ticket_type, :category_id, :subcategory_id, :ticket_priority, :status_id, :comment_id, :name, :description, :created_by_id, :updated_by_id)
+      params.require(:ticket_detail).permit(:location_id, :parent_id, :ticket_type, :ticket_category_id, 
+                                            :ticket_subcategory_id, :ticket_priority, :ticket_status_id,
+                                            :comment_id, :name, :description, :created_by_id, :updated_by_id, 
+                                            comments_attributes: [:ticket_detail_id, :name, :description, :type, 
+                                                :created_by_id, :updated_by_id],
+                                            ticket_user_assignments_attributes: [:ticket_detail_id, :user_id])
     end
 end

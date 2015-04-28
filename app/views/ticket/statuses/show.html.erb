@@ -1,21 +1,27 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @ticket_status.name %>
-</p>
-
-<p>
-  <strong>Order:</strong>
-  <%= @ticket_status.order %>
-</p>
+<h1><%= @ticket_status.name %> Tickets</h1>
 
 <p>
   <strong>Time tracked:</strong>
   <%= @ticket_status.time_tracked %>
 </p>
 
+
+<div class = "row">
+    <div class = "col-md-12">
+      <% if !@ticket_details.nil? %>
+        <%= render :partial => 'ticket/details/indexlist' %>
+      <% else %>
+        <p>No Open Tickets</p>
+      <% end %>
+      <%= link_to 'New Ticket', new_ticket_detail_path(:ticket_status_id => @ticket_status.id) %>
+      
+    </div>
+
+ </div>
+
 <%= link_to ticket_statuses_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
-<%= link_if_you_can(:edit, @ticket_status, 'fa fa-eye') %> | 
+<%= link_if_you_can(:edit, @ticket_status, 'fa fa-pencil') %> |
 <%= link_if_you_can(:destroy, @ticket_status, 'fa fa-times') %>
 

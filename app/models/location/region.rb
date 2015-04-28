@@ -1,1 +1,2 @@
-class Region < Location; end
+class Region < Location
+end

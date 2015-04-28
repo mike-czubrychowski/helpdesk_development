@@ -1,39 +1,58 @@
 <p id="notice"><%= notice %></p>
 
-<h1><%= @person.name %></h1>
 
-<p><strong>Location:</strong>
-  <% @person.location.ancestors.each do |ancestor| %>
-    <%= link_if_you_can(:read, ancestor) %> / 
-  <% end %>
-  <%= link_if_you_can(:read, @person.store_detail) %>
-</p>
+<ol class="breadcrumb">
+   <% @person.location.ancestors.each do |ancestor| %>
+      <li><%= link_if_you_can(:read, ancestor) %></li> 
+    <% end %>
+    <li> <%= @person.store_detail.name %></li>
+</ol> 
 
-<strong>Startdate:</strong>
-  <%= @person.startdate %>
-</p>
-
-<p>
-  <strong>Leavedate:</strong>
-  <%= @person.leavedate %>
-</p>
+<div class = "col-md-12">
+  <h1><%= @person.name %></h1>
+  <br />
+</div>
 
 
-<p>
-  <strong>Jobtitle:</strong>
-  <%= @person.jobtitle %>
-</p>
+  <div class = "col-md-3">
 
-<p>
-  <strong>Phone:</strong>
-  <%= @person.phone %>
-</p>
+    <strong>Startdate:</strong>
+      <%= @person.startdate %>
+    </p>
 
-<p>
-  <strong>Email:</strong>
-  <%= @person.email %>
-</p>
+    <p>
+      <strong>Leavedate:</strong>
+      <%= @person.leavedate %>
+    </p>
 
-<%= link_to people_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
-<%= link_if_you_can(:edit, @person, 'fa fa-pencil') %> |
-<%= link_if_you_can(:destroy, @person, 'fa fa-times') %>
+
+    <p>
+      <strong>Jobtitle:</strong>
+      <%= @person.jobtitle %>
+    </p>
+
+    <p>
+      <strong>Manager:</strong>
+      <%= link_if_you_can(:read, @person.manager) %>
+    </p>
+
+
+    <p>
+      <strong>Phone:</strong>
+      <%= @person.phone %>
+    </p>
+
+    <p>
+      <strong>Email:</strong>
+      <%= @person.email %>
+    </p>
+  </div>
+  <div class = "col-md-9">
+      <%= render 'people/indexlist' %>
+  </div>
+
+
+
+  <%= link_to people_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
+  <%= link_if_you_can(:edit, @person, 'fa fa-pencil') %> |
+  <%= link_if_you_can(:destroy, @person, 'fa fa-times') %>

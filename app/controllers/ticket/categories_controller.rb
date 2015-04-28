@@ -49,6 +49,7 @@ class Ticket::CategoriesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_ticket_category
       @ticket_category = Ticket::Category.find(params[:id])
+      @ticket_details = @ticket_category.tickets #Ticket::Detail.where("ticket_category_id = ?", @ticket_category.id)
     end
 
     # Only allow a trusted parameter "white list" through.

@@ -1,3 +1,2 @@
-
 class Site < Location
 end

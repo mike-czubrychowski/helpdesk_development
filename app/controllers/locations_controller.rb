@@ -1,19 +1,18 @@
 class LocationsController < ApplicationController
-  before_action :set_category
-  before_action :set_location, only: [:show, :edit, :update, :destroy]
+  
+  #load_and_authorize_resource :location, :ticket_detail, :person
 
+  before_action :set_location_category
+  before_action :set_location, only: [:show, :edit, :update, :destroy]
+ 
   # GET /locations
   def index
-    @locations = @locations = klass.all
+    #Required for STI
+    @locations = location_category.constantize.inclusive
   end
 
   # GET /locations/1
   def show
-    #why doesn't this work with scopes?
-    @ticket_details = Ticket::Detail.where("location_id in (?)", @location.subtree_ids)
-    #@people = @location.manager.sublocations.people
-
-    
   end
 
   # GET /locations/new
@@ -52,21 +51,19 @@ class LocationsController < ApplicationController
   end
   private
     def set_location
-      @location = Location.find(params[:id])
+      @location = Location.inclusive.find(params[:id])
+      @ticket_details = @location.tickets
+      @people = @location.employees
+      
     end
 
-    def set_category
-     @category = category
+    def set_location_category
+     @location_category = location_category
     end
 
-    def category
+    def location_category
       Location.categories.include?(params[:type]) ? params[:type] : "Location"
     end
-
-    def klass
-      category.constantize 
-    end
-
 
     # Only allow a trusted parameter "white list" through.
     def location_params

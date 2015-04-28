@@ -6,12 +6,20 @@ module ApplicationHelper
         
 
 		begin
-
+			
+			
 			if htmlclass.nil? 
-				link_text = obj.name
+
+				if Location.categories.include? obj.class.name and obj.class.name != 'Storelocation'
+					link_text = obj.friendly_name
+				else
+					link_text = obj.name
+				end
+			
+
 			else
 				link_text = ''
-			end 
+			end
 
 			
 			
@@ -36,7 +44,7 @@ module ApplicationHelper
 		
 	end
 
-	def link_to_location_if_you_can(permission, obj)
+	def link_to_location_type_if_you_can(permission, obj)
 		#refactor above
 
 		link_to obj.category_id, obj.category.downcase.pluralize

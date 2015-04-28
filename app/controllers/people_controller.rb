@@ -49,6 +49,7 @@ class PeopleController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_person
       @person = Person.find(params[:id])
+      @people = @person.employees
     end
 
     # Only allow a trusted parameter "white list" through.

@@ -39,6 +39,8 @@ gem 'kaminari' #for pagination
 gem 'chart-js-rails'
 gem 'gritter'  #growl like notifications
 
+gem 'gmaps4rails'
+
 
 
 group :development, :test do

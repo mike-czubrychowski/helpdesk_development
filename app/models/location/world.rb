@@ -1,4 +1,3 @@
-
 class World < Location
 end
 

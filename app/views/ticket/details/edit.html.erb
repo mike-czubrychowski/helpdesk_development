@@ -1,14 +1,12 @@
 <h1>Update Ticket (<%= @ticket_detail.id %>)</h1>
+<h2><%= link_to ticket_details_path do %><i class ="fa fa-arrow-left"></i><% end -%>  
+<%= link_if_you_can(:destroy, @ticket_detail, 'fa fa-times') %></h2>
 
 <%= render 'form' %>
 
-<% if @ticket_comments.count > 0 %>
-	<h1>Comments</h1>
+<br /><br />
+<br /><br />
 
-	<%= render 'ticket/comments/indexlist' %>
-<% end %>
 
-<%= link_to ticket_details_path do %><i class ="fa fa-arrow-left"></i><% end -%> | 
-<%= link_if_you_can(:read, @ticket_detail, 'fa fa-eye') %> | 
-<%= link_if_you_can(:destroy, @ticket_detail, 'fa fa-times') %>
+
 

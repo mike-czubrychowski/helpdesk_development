@@ -1,22 +1,24 @@
-<table class="table table-striped table-responsive" id ="store_details" >
-  <thead>
-    <tr>
-	    	<th>Name</th>
-	    	<th>Manager</th>
-	    	<th>Area</th>
-	    	<th>Phone</th>
-	      	
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @store_details.each do |store_detail| %>
+<% if !@store_details.nil? %>
+  <table class="table table-striped table-responsive" id ="store_details" >
+    <thead>
       <tr>
-      		<td><%= link_if_you_can(:read, store_detail) %></td>
-	        <td><%= link_if_you_can(:read, store_detail.manager) %>
-	        <td><%= link_if_you_can(:read, store_detail.area) %>
-	        <td><%= store_detail.phone %></td>
+  	    	<th>Name</th>
+  	    	<th>Manager</th>
+  	    	<th>Area</th>
+  	    	<th>Phone</th>
+  	      	
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>
+      <% @store_details.each do |store_detail| %>
+        <tr>
+        		<td><%= link_if_you_can(:read, store_detail) %></td>
+  	        <td><%= link_if_you_can(:read, store_detail.manager) %>
+  	        <td><%= link_if_you_can(:read, store_detail.area) %>
+  	        <td><%= store_detail.phone %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

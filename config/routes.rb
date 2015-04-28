@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   namespace :ticket do
     resources :details
     resources :comments
-    resources :users
+    resources :user_assignments
     resources :statuses
     resources :status_histories
     resources :categories
@@ -52,7 +52,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'people#index'
+  root 'ticket/details#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -2,7 +2,7 @@
 
 <p>
   <strong>Detail:</strong>
-  <%= @ticket_comment.detail %>
+  <%= @ticket_comment.ticket_detail_id %>
 </p>
 
 <p>
@@ -17,7 +17,7 @@
 
 <p>
   <strong>Type:</strong>
-  <%= @ticket_comment.type %>
+  <%= @ticket_comment.comment_type %>
 </p>
 
 <p>
@@ -25,10 +25,7 @@
   <%= @ticket_comment.created_by %>
 </p>
 
-<p>
-  <strong>Updated by:</strong>
-  <%= @ticket_comment.updated_by %>
-</p>
+
 
 <%= link_to ticket_comments_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
 <%= link_if_you_can(:edit, @ticket_comment, 'fa fa-pencil') %> |

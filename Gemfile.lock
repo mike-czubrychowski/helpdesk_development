@@ -100,6 +100,7 @@ GEM
     foreigner (1.7.4)
       activerecord (>= 3.0.0)
     formatador (0.2.5)
+    gmaps4rails (2.1.2)
     gritter (1.1.0)
     guard (2.12.5)
       formatador (>= 0.2.4)
@@ -280,6 +281,7 @@ DEPENDENCIES
   faker
   font-awesome-rails
   foreigner
+  gmaps4rails
   gritter
   guard-rspec
   jquery-datatables-rails

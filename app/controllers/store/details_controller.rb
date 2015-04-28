@@ -8,8 +8,6 @@ class Store::DetailsController < ApplicationController
 
   # GET /store/details/1
   def show
-    @people = Person.where("store_detail_id = ?", params[:id] )
-    @tickets = Ticket::Detail.where("location_id = ?", @store_detail.location_id)
   end
 
   # GET /store/details/new
@@ -50,7 +48,9 @@ class Store::DetailsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_store_detail
-      @store_detail = Store::Detail.find(params[:id])
+      @store_detail = Store::Detail.inclusive.find(params[:id])
+      @ticket_details = @store_detail.tickets
+      @people = @store_detail.employees
     end
 
     # Only allow a trusted parameter "white list" through.

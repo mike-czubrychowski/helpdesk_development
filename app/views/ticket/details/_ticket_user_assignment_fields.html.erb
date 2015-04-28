@@ -1,0 +1,16 @@
+<div class = "nested-fields">
+  <fieldset>
+    
+    <div class="row">
+      <div class ="col-md-8">
+
+        <%= f.collection_select :user_id, @users, :id, :name, hide_label: true  %>
+        
+      </div>
+      <div class ="col-md-4">
+        <%= link_to_remove_association '', f,  :class => "fa fa-times text-right", :style => "padding-left: 10px; padding-top: 5px;  font-size: 150%" %>
+      </div>
+    </div>
+  </fieldset>
+  <br>
+</div>

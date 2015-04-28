@@ -1,60 +1,73 @@
 <p id="notice"><%= notice %></p>
 
+
+<ol class="breadcrumb">
+   <% @store_detail.location.ancestors.each do |ancestor| %>
+      <li><%= link_if_you_can(:read, ancestor) %></li> 
+    <% end %>
+    <li> <%= @store_detail.name %></li>
+</ol> 
+
 <div class = "col-md-12">
   <h1><%= @store_detail.name %> (<%= @store_detail.id %>)</h1>
   <h2><strong><%= @store_detail.phone %></strong></h2>  
-  
-
-  
-  <div class = "row">
-    <div class = "col-md-3">
-      <p>  <%= @store_detail.address1 %></p>
-      <p>  <%= @store_detail.address2 %></p>
-      <p>  <%= @store_detail.address3 %></p>
-      <p>  <%= @store_detail.town %></p>
-      <p>  <%= @store_detail.county %></p>
-      <p>  <%= @store_detail.postcode %></p>
-      <p>  <%= @store_detail.uk_country %></p>
-    </div>
-
-    <div class = "col-md-3">
-
-      <p>
-        <strong>Account Code:</strong>
-        <%= @store_detail.account %>
-      </p>
+</div>  
 
 
-      <p>
-        <strong>Status:</strong>
-        <%= @store_detail.status %>
-      </p>
+<div class = "col-md-3">
 
-      <p>
-        <strong>Opening Day:</strong>
-        <%= @store_detail.openingday %>
-      </p>
-    </div>
+  <p><strong>Location:</strong>
+   
+  </p>
+
+  <p>  <%= @store_detail.address1 %></p>
+  <p>  <%= @store_detail.address2 %></p>
+  <p>  <%= @store_detail.address3 %></p>
+  <p>  <%= @store_detail.town %></p>
+  <p>  <%= @store_detail.county %></p>
+  <p>  <%= @store_detail.postcode %></p>
+  <p>  <%= @store_detail.uk_country %></p>
+
+  <br>
+  <p>
+    <strong>Account Code:</strong>
+    <%= @store_detail.account %>
+  </p>
 
 
-    <div class = "col-md-6">
-      <%= render :partial => 'people/indexlist' %>
-    </div>
+  <p>
+    <strong>Status:</strong>
+    <%= @store_detail.status %>
+  </p>
 
-  </div>
+  <p>
+    <strong>Opening Day:</strong>
+    <%= @store_detail.openingday %>
+  </p>
+</div>
 
-  <div class = "row">
-    <div class = "col-md-12">
-      <% if @tickets.count > 0 %>
-        <%= render :partial => 'ticket/details/indexlist' %>
-      <% else %>
-        <p>No Open Tickets</p>
-      <% end %>
-      <%= link_to 'New Ticket', new_ticket_detail_path(:location_id => @store_detail.location_id) %>
-    </div>
 
-  </div>
+<div class = "col-md-9">
+  <%= render :partial => 'people/indexlist' %>
+</div>
 
+
+
+<div class = "col-md-12">
+
+  <br />
+  <br />
+  <br />
+  <br />
+
+
+
+  <%= render :partial => 'ticket/details/indexlist' %>
+
+  <%= link_to 'New Ticket', new_ticket_detail_path(:location_id => @store_detail.location_id) %>
+</div>
+
+<div class = "col-md-12">
   <%= link_to store_details_path do %><i class ="fa fa-arrow-left"></i><% end -%> 
 </div>
 
