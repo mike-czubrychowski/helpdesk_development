@@ -1,6 +1,6 @@
 class LocationsController < ApplicationController
   
-  #load_and_authorize_resource :location, :ticket_detail, :person
+  load_and_authorize_resource
 
   before_action :set_location_category
   before_action :set_location, only: [:show, :edit, :update, :destroy]
@@ -8,7 +8,7 @@ class LocationsController < ApplicationController
   # GET /locations
   def index
     #Required for STI
-    @locations = location_category.constantize.inclusive
+    @locations = location_category.constantize.inclusive.accessible_by(current_ability)#where("id IN (?)", current_user.location.subtree_ids)
   end
 
   # GET /locations/1
@@ -51,7 +51,7 @@ class LocationsController < ApplicationController
   end
   private
     def set_location
-      @location = Location.inclusive.find(params[:id])
+      @location = Location.inclusive.where("id IN (?)", current_user.location.subtree_ids).find(params[:id])
       @ticket_details = @location.tickets
       @people = @location.employees
       

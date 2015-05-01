@@ -4,13 +4,13 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :lockable
 
-  has_many :assignments
+  has_one :assignment
   has_many :ticket_user_assignments, class_name: "Ticket:UserAssignment", inverse_of: :user
   
   has_many :tickets, class_name: "Ticket::Detail", inverse_of: :created_by
   has_many :comments, class_name: "Ticket::Comment", inverse_of: :created_by
   
-  has_many :roles, :through => :assignments #this could be has_one
+  has_one :role, :through => :assignment #this could be has_one
   has_one :store_detail, :through => :person 
   belongs_to :person, inverse_of: :user
   belongs_to :organisation, inverse_of: :users

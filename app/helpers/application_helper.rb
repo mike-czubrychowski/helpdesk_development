@@ -1,12 +1,9 @@
 module ApplicationHelper
 
 
-	def link_if_you_can(permission, obj, htmlclass = nil)
-
-        
+	def link_if_you_can(permission, obj, htmlclass = nil)        
 
 		begin
-			
 			
 			if htmlclass.nil? 
 
@@ -35,7 +32,7 @@ module ApplicationHelper
 						link_to link_text, [permission, obj], :class => htmlclass
 				end
 			else
-			    obj.name
+			    obj.name if link_text != ''
 			end
 			
 		rescue 
@@ -51,6 +48,7 @@ module ApplicationHelper
 		
 	end
 
+	
 	
 
 

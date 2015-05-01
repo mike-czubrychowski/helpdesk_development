@@ -115,7 +115,8 @@ $fonturl_5: asset-url('62f-GUHoRIA5Xaf0fgZolw.woff');
 $data_uri_0: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAHCAYAAAA1WQxeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAGFJREFUeNpinHLMhgEHKADia0xQThIQs6JJ9gPxZhYQAcS6QHwDiI8hSYJAC0gBPxDLAvFcIJ6JJJkDxFNBVtgBcQ8Qa6BLghgwN4A4a9ElQYAFSj8C4mwg3o8sCQIAAQYA78QTYqnPZuEAAAAASUVORK5CYII=";
 
 //urls
-$url_0: url(http://fonts.googleapis.com/css?family=Ruda:400,700,900);
+
+
 $url_1: url(../img/nav-expand.png);
 $url_2: url(../img/arrow-up.png);
 $url_3: url(http://i.imgbox.com/abmuNQx2);
@@ -127,12 +128,14 @@ $url_8: url(../img/profile-01.jpg);
 $url_9: url(../img/profile-02.jpg);
 $url_10: url(../img/zoom.png);
 $url_11: url(../img/mask.png);
+$url_12: asset-url('login-bg.jpg');
 
 //@extend-elements
 //original selectors
-//.btn-theme:hover, .btn-theme:focus, .btn-theme:active, .btn-theme.active, .open .dropdown-toggle.btn-theme
+//.btn-theme:hover, .btn-theme:focus, .btn-theme:active, .btn-theme.active, .btn-theme, .open .dropdown-toggle.btn-theme
 %extend_1 {
 	color: $white;
+	font-family: $font_0, $font_1;
 	background-color: $color_puerto_rico_approx;
 	border-color: $color_puerto_rico_approx;
 }
@@ -174,7 +177,7 @@ $url_11: url(../img/mask.png);
 //original selectors
 //ul.top-menu > li > a:hover, ul.top-menu > li > a:focus
 %extend_6 {
-	border: 1px solid $color_nobel_approx !important;
+	//border: 1px solid $color_nobel_approx !important;
 	background-color: transparent !important;
 	border-color: $color_nobel_approx !important;
 	text-decoration: none;
@@ -315,11 +318,11 @@ ul {
 		> {
 			.logout {
 				color: $concrete;
-				font-size: 12px;
+				font-size: 15px;
 				//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
 				border-radius: 4px;
 				border: 1px solid $color_downy_approx !important;
-				padding: 5px 15px;
+				padding: 9px 15px;
 				margin-right: 15px;
 				background: $color_turquoise_blue_approx;
 				margin-top: 15px;
@@ -330,6 +333,21 @@ ul {
 				//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
 				border-radius: 4px;
 				border: 1px solid $color_storm_dust_approx !important;
+				padding: 10px 15px;
+				margin-right: 15px;
+				&:hover {
+					@extend %extend_6;
+				}
+				&:focus {
+					@extend %extend_6;
+				}
+			}
+			form {
+				color: $color_storm_dust_approx;
+				font-size: 12px;
+				//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+				border-radius: 4px;
+				
 				padding: 2px 6px;
 				margin-right: 15px;
 				&:hover {
@@ -339,6 +357,17 @@ ul {
 					@extend %extend_6;
 				}
 			}
+			.toolbar{
+				font-size: 12px;
+				//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+				border-radius: 4px;
+				border: none;
+				
+				margin-right: 15px;
+				
+				margin-top: 15px;
+			}
+
 		}
 	}
 }
@@ -749,14 +778,13 @@ hr {
 			width: 268px !important;
 		}
 		> a {
-			border: 1px solid $color_gallery_approx;
+			
 			//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
 			border-radius: 4px;
-			padding: 6px;
 			background: none;
 			margin-right: 0;
 			&:hover {
-				border: 1px solid $color_porcelain_approx;
+				
 				background: $color_porcelain_approx;
 				.caret {
 					border-bottom-color: $black;
@@ -764,7 +792,7 @@ hr {
 				}
 			}
 			&:focus {
-				border: 1px solid $color_porcelain_approx;
+				
 				background: $color_porcelain_approx;
 			}
 		}
@@ -1832,13 +1860,14 @@ label {
 		border-radius: 6px 0 0 6px;
 	}
 }
-.form-login {
+.login-container { background-image: $url_12; }
+.new_user {
 	max-width: 330px;
 	margin: 100px auto 0;
 	background: $white;
 	//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
 	border-radius: 5px;
-	h2.form-login-heading {
+	h2.new_user-heading {
 		margin: 0;
 		padding: 25px 20px;
 		text-align: center;
@@ -1854,6 +1883,7 @@ label {
 .login-wrap {
 	padding: 20px;
 	.registration {
+		margin-top: 25px;
 		text-align: center;
 	}
 }

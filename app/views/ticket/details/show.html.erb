@@ -54,7 +54,4 @@
   <p><%= comment.id %></p>
 <% end %>
 
-
-<%= link_to ticket_details_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
-<%= link_if_you_can(:edit, @ticket_detail, 'fa fa-pencil') %> |
-<%= link_if_you_can(:destroy, @ticket_detail, 'fa fa-times') %>
+<%= render 'layouts/links', locals: {item: @ticket_detail} %>

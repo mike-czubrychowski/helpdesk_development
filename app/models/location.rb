@@ -6,8 +6,12 @@ class Location < ActiveRecord::Base
  
 
   has_many :ticket_details,     class_name: "Ticket::Detail",                        inverse_of: :location
+  has_many :ticket_comments,   class_name: "Ticket::Comment", through: :ticket_details
+  has_many :ticket_statuses,   class_name: "Ticket::Status", through: :ticket_details
+  has_many :ticket_categories,   class_name: "Ticket::Category", through: :ticket_details
+  has_many :ticket_subcategories,   class_name: "Ticket::Subcategory", through: :ticket_details
 
-  scope :inclusive, -> {includes(:manager)}
+  scope :inclusive, -> {includes(:manager).includes(:ticket_details)}#.includes(:ticket_comments).includes(:ticket_statuses).includes(:ticket_categories).includes(:ticket_subcategories)}
   scope :opentickets, -> {includes(:ticket_details)}
 
   delegate :name, :to => :manager, :allow_nil => true, :prefix => true

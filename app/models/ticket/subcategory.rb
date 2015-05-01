@@ -7,7 +7,7 @@ class Ticket::Subcategory < ActiveRecord::Base
 
   def tickets
   	begin
-  		Ticket::Detail.where("ticket_subcategory_id = ?", @ticket_subcategory.id)
+  		Ticket::Detail.where("ticket_subcategory_id = ?", self.id)
   	rescue 
   		nil
   	end

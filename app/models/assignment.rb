@@ -1,7 +1,7 @@
 class Assignment < ActiveRecord::Base
-  	belongs_to :user
-	belongs_to :role
+  	belongs_to :user, :inverse_of => :assignment
+	belongs_to :role, :inverse_of => :assignments
 	
-	attr_accessible :user_id, :role_id
+	
 	validates :user_id, :presence => true, :uniqueness => true 
 end

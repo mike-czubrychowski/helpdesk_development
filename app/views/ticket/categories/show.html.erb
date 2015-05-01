@@ -18,6 +18,4 @@
 
  </div>
 
-<%= link_to ticket_categories_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
-<%= link_if_you_can(:edit, @ticket_category, 'fa fa-pencil') %> |
-<%= link_if_you_can(:destroy, @ticket_category, 'fa fa-times') %>
+<%= render 'layouts/links', locals: {item: @ticket_category} %>

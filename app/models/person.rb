@@ -7,6 +7,8 @@ class Person < ActiveRecord::Base
 
   #alias_method :subordinates, :employees
 
+  scope :inclusive, -> {includes(:store_detail)}
+
   def name
     begin
     	if self.preferredname.nil? then

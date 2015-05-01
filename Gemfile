@@ -28,6 +28,7 @@ gem 'bootstrap-sass-extras'
 gem 'bootstrap_form'
 gem 'rails_layout' #generates bootstrap layouts for devise
 
+
 gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'jquery-datatables-rails'

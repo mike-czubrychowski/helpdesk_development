@@ -25,8 +25,4 @@
   <%= @ticket_comment.created_by %>
 </p>
 
-
-
-<%= link_to ticket_comments_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
-<%= link_if_you_can(:edit, @ticket_comment, 'fa fa-pencil') %> |
-<%= link_if_you_can(:destroy, @ticket_comment, 'fa fa-times') %>
+<%= render 'layouts/links', locals: {item: @ticket_comment} %>

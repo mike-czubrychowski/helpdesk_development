@@ -1,4 +1,6 @@
 class OrganisationsController < ApplicationController
+
+  load_and_authorize_resource 
   before_action :set_organisation, only: [:show, :edit, :update, :destroy]
 
   # GET /organisations

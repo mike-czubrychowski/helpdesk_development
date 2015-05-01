@@ -1,4 +1,6 @@
 class Ticket::StatusHistoriesController < ApplicationController
+
+  load_and_authorize_resource 
   before_action :set_ticket_status_history, only: [:show, :edit, :update, :destroy]
 
   # GET /ticket/status_histories

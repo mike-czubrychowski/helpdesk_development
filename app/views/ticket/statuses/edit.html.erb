@@ -2,7 +2,4 @@
 
 <%= render 'form' %>
 
-<%= link_to ticket_statuses_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
-<%= link_if_you_can(:read, @ticket_status, 'fa fa-eye') %> | 
-<%= link_if_you_can(:destroy, @ticket_status, 'fa fa-times') %>
-
+<%= render 'layouts/links', locals: {item: @ticket_status} %>

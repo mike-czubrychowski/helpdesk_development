@@ -1,4 +1,6 @@
 class Ticket::UserAssignmentsController < ApplicationController
+
+  load_and_authorize_resource 
   before_action :set_ticket_user_assignment, only: [:show, :edit, :update, :destroy]
 
   # GET /ticket/users

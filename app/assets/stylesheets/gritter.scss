@@ -1,0 +1,130 @@
+//colors
+$color_gallery_approx: #eee;
+$black: #000;
+$color_log_cabin_approx: #222;
+
+//fonts
+$font_0: verdana;
+
+//urls
+
+$url_0: asset-url('ie-spacer.gif');
+$url_1: asset-url('gritter.png');
+$url_2: asset-url('gritter-light.png');
+
+
+#gritter-notice-wrapper {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	width: 301px;
+	z-index: 9999;
+	&.top-left {
+		left: 20px;
+		right: auto;
+	}
+	&.bottom-right {
+		top: auto;
+		left: auto;
+		bottom: 20px;
+		right: 20px;
+	}
+	&.bottom-left {
+		top: auto;
+		right: auto;
+		bottom: 20px;
+		left: 20px;
+	}
+}
+.gritter-item-wrapper {
+	position: relative;
+	margin: 0 0 10px 0;
+	background: $url_0;
+}
+.gritter-top {
+	background: $url_1 no-repeat left -30px;
+	height: 10px;
+}
+.hover {
+	.gritter-top {
+		background-position: right -30px;
+	}
+	.gritter-bottom {
+		background-position: bottom right;
+	}
+	.gritter-item {
+		background-position: right -40px;
+	}
+}
+.gritter-bottom {
+	background: $url_1 no-repeat left bottom;
+	height: 8px;
+	margin: 0;
+}
+.gritter-item {
+	display: block;
+	background: $url_1 no-repeat left -40px;
+	color: $color_gallery_approx;
+	padding: 2px 11px 8px;
+	font-size: 11px;
+	font-family: $font_0;
+	p {
+		padding: 0;
+		margin: 0;
+		word-wrap: break-word;
+	}
+}
+.gritter-close {
+	display: none;
+	position: absolute;
+	top: 5px;
+	left: 3px;
+	background: $url_1 no-repeat left top;
+	cursor: pointer;
+	width: 30px;
+	height: 30px;
+	text-indent: -9999em;
+}
+.gritter-title {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 0 0 7px 0;
+	display: block;
+	//Instead of the line below you could use @includetext-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	text-shadow: 1px 1px 0 $black;
+}
+.gritter-image {
+	width: 48px;
+	height: 48px;
+	float: left;
+}
+.gritter-with-image {
+	padding: 0;
+	width: 220px;
+	float: right;
+}
+.gritter-without-image {
+	padding: 0;
+}
+.gritter-light {
+	.gritter-item {
+		background-image: $url_2;
+		color: $color_log_cabin_approx;
+	}
+	.gritter-bottom {
+		background-image: $url_2;
+		color: $color_log_cabin_approx;
+	}
+	.gritter-top {
+		background-image: $url_2;
+		color: $color_log_cabin_approx;
+	}
+	.gritter-close {
+		background-image: $url_2;
+		color: $color_log_cabin_approx;
+	}
+	.gritter-title {
+		//Instead of the line below you could use @includetext-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		text-shadow: none;
+	}
+}

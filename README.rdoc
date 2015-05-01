@@ -201,6 +201,21 @@ ROOT category must be renamed: World
 Store category myst be renamed: Storelocation
 
 
+Gritter (for Flash notifications)
+---------------------
+
+gem 'gritter'
+rails g gritter:locale
+javascript
+//=require gritter
+scss
+@import "gritter";
+
+
+add to config/assets
+	Rails.application.config.assets.precompile += %w( gritter.png gritter-light.png ie-spacer.gif )
+put images into images/gritter
+
 
 Application layout
 -----------------
@@ -209,9 +224,19 @@ Add this to the <div> before yield in application.html.erb
 
 
 Alter the application layout to include the store/taskbar
+Add gritter notification (from above)
+
+<% for @status_histories.each do |status_history|
+	<%= js add_gritter("This is a notification just for you!") %>
+<% end %>
 
 
-
+Mailers
+------
+Mailer is created in app/mailers
+The post_email(user) function handles the mail using templates in /views/status_history_mailer/post_email.text.erb
+In Ticket::StatusHistory model an after_create hook calls this to send the mail:
+	StatusHistoryMailer.post_email(user).deliver
 
 
 
@@ -343,12 +368,15 @@ SQL for Location's table
 TO DO
 	
 	- Finish off cocoon ticket_user_assignment /
+		- ticket user assignment must not insert duplicates for ticket & users
 	- Clarify the employees relation.  Do employees belong to a store, a location or a manager?
-		- To a store?
+		- To a store / But they can see locations, and higher ones if they are managers
 	- Link organisations to ticket_categories - ? by assignment or better?
-	- Setup devise
-	- Enable users, and write ability
-		-user.roles = superadmin, helpdesk, thirdparty, employee, customer
+	- Setup devise /
+	- Enable users, and write ability X
+		-user.roles = superadmin, helpdesk, thirdparty, employee, customer /
+		-Cancan is dead. Use pundit
+	- Setup Cast275 with Pundit
 	- Finish off lookup definitions, validations and scopes before you do more tables
 	- Make Ticket view and Stores. /
 		- Consider what to do when you have eg no open tickets, you need to partially render the view to show headers?
@@ -364,7 +392,7 @@ TO DO
 		-Work out how to create locations table from business drivers.
 	- Finish off linking for ticket_priority, status/ 
 		-should ticket type and priority also have table and controllers?
-	- Add ticket comment not working
+	- Add ticket comment not working /
 	- Ticket Type is FAQ (like knowledge base for employees)
 	- Remove ticket_category_id from ticket_detail, and make it a look up through ticket_subcategory
 		-Write JS lookup
@@ -385,5 +413,8 @@ TO DO
 	- Reports
 		- Breakdown by priority / category etc. vs User  Items met within SLA
 		- Breakdown by priortiy / etc vs Location 
+	- Notifications
+		-Gritter is installed and working. Not picking up @ticket_status_histories correctly
+		-Basic mailer is setup, need to install Redis, Resque and Resque mailer
 
 

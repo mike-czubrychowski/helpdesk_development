@@ -1,0 +1,9 @@
+<div class = "row">
+	<div class = "col-md-12">
+		<h3>
+			<%= link_to :back do %><i class ="fa fa-arrow-left"></i><% end -%>
+			<%= link_if_you_can(:edit, @item, 'fa fa-times') %>
+			<%= link_if_you_can(:destroy, @item, 'fa fa-times') %>
+		</h3>
+	</div>
+</div>

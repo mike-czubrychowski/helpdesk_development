@@ -1,9 +1,11 @@
 class PeopleController < ApplicationController
+
+  load_and_authorize_resource 
   before_action :set_person, only: [:show, :edit, :update, :destroy]
 
   # GET /people
   def index
-    @people = Person.all
+    @people = Person.inclusive.accessible_by(current_ability)
   end
 
   # GET /people/1

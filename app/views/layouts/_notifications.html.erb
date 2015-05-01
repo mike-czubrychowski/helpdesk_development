@@ -1,0 +1,6 @@
+
+<% if !@ticket_status_histories.nil? %>
+	<% @ticket_status_histories.each do |notification| %>
+    	<%= js add_gritter("Status changed to " + notification.ticket_status_name, :title => "Ticket " + notification.ticket_detail_id.to_s) %>
+    <% end %>
+<% end %>

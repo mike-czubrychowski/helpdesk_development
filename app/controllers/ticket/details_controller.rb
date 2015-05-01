@@ -1,4 +1,7 @@
 class Ticket::DetailsController < ApplicationController
+
+  load_and_authorize_resource :class => Ticket::Detail
+
   before_action :set_ticket_detail, only: [:show, :edit, :update, :destroy]
   before_filter :set_lookups, only: [:edit, :update, :new]
 
@@ -6,6 +9,8 @@ class Ticket::DetailsController < ApplicationController
   # GET /ticket/details
   def index
     @ticket_details = Ticket::Detail.inclusive
+    #authorize! :index, @ticket_details
+    #
   end
 
   # GET /ticket/details/1
@@ -77,9 +82,11 @@ class Ticket::DetailsController < ApplicationController
       
       if @ticket_detail then
         @ticket_comments = Ticket::Comment.where("ticket_detail_id = ?", @ticket_detail.id)
+        @ticket_status_histories = Ticket::StatusHistory.where("ticket_detail_id = ?", @ticket_detail.id)
+        @ticket_user_assignments = Ticket::UserAssignment.where("ticket_detail_id = ?", @ticket_detail.id)
       end
 
-      @ticket_user_assignments = Ticket::UserAssignment.where("ticket_detail_id = ?", @ticket_detail.id)
+      
 
     end
 

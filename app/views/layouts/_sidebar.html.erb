@@ -5,7 +5,9 @@
         <ul class="sidebar-menu" id="nav-accordion">
         
             <p class="centered"><a href="profile.html"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
-            <h5 class="centered">Current User</h5>
+            <h5 class="centered"><%= current_user.name %></h5>
+            <h6  class="centered"><%= current_user.role %></h6>
+            <h6  class="centered"><%= current_user.location.name %></h6>
               
             <li class="mt">
                 <%= link_to root_path do %>
