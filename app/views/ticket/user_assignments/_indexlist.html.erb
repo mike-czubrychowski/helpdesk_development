@@ -1,23 +1,25 @@
-<table class="table table-striped table-responsive" id ="ticket_users" >
-  <thead>
-    <tr>
-	    	<th>User Assignment</th>
-	      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @ticket_user_assignments.each do |ticket_user_assignment| %>
+<% if !@ticket_user_assignments.nil? %>
+  <table class="table table-striped table-responsive" id ="ticket_users" >
+    <thead>
       <tr>
-	        <td><%= ticket_user_assignment.user.person.name %></td>
-
-        <td>
-	        <%= link_if_you_can(:destroy, ticket_user_assignment, 'fa fa-times') %>
-	        
-
-        </td>
-        
+  	    	<th>User Assignment</th>
+  	      <th></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>
+      <% @ticket_user_assignments.each do |ticket_user_assignment| %>
+        <tr>
+  	        <td><%= ticket_user_assignment.user.person.name %></td>
+
+          <td>
+  	        <%= link_if_you_can(:destroy, ticket_user_assignment, 'fa fa-times') %>
+  	        
+
+          </td>
+          
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

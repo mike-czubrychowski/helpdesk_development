@@ -27,7 +27,7 @@
   	        <td><%= link_if_you_can(:read, ticket_detail.ticket_subcategory) %></td>
   	        <td><%= ticket_detail.ticket_priority %></td>
   	        <td><%= link_if_you_can(:read, ticket_detail.ticket_status)%></td>
-  	        <td><%= ticket_detail.created_by_name %></td>
+  	        <td><%= link_if_you_can(:read, ticket_detail.created_by) %></td>
 
           <td>
 

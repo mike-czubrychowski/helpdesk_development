@@ -28,7 +28,7 @@
       <%= f.select :ticket_priority, options_for_select(@priorities) %>
       <%= f.collection_select :ticket_status_id, @statuses, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %> 
       <%= render 'ticket/status_histories/indexlist' %>
-      <h4>Total Time Elapsed: <%= @ticket_detail.time_taken %></h4> 
+      
     </div>
     <div class="col-md-4">
       <%= render 'ticket/user_assignments/indexlist' %>

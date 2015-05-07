@@ -1,6 +1,6 @@
 class Store::DetailsController < ApplicationController
   
-  load_and_authorize_resource 
+  #load_and_authorize_resource 
   before_action :set_store_detail, only: [:show, :edit, :update, :destroy]
 
   # GET /store/details

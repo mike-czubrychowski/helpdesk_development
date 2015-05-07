@@ -1,6 +1,6 @@
 class Storelocation < Location
-	has_one :store_detail, class_name: "Store::Detail", inverse_of: :location
-	has_many :store_tills, class_name: "Store::Till", inverse_of: :location
+	has_one :store_detail, class_name: "Store::Detail", inverse_of: :location, foreign_key: "location_id"
+	has_many :store_tills, class_name: "Store::Till", inverse_of: :location, foreign_key: "location_id"
 
   #delegate :id, :to => :store_detail, :allow_nil => true, :prefix => "store"
 

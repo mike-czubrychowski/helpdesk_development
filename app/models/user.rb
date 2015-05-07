@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   has_one :assignment
   has_many :ticket_user_assignments, class_name: "Ticket:UserAssignment", inverse_of: :user
   
-  has_many :tickets, class_name: "Ticket::Detail", inverse_of: :created_by
+  has_many :ticket_details, class_name: "Ticket::Detail", inverse_of: :created_by, foreign_key: "created_by_id"
   has_many :comments, class_name: "Ticket::Comment", inverse_of: :created_by
   
   has_one :role, :through => :assignment #this could be has_one
@@ -39,5 +39,14 @@ class User < ActiveRecord::Base
       nil
     end
   end
+
+  def tickets
+    begin
+      self.ticket_details
+    rescue 
+      nil
+    end
+  end
+
   
 end

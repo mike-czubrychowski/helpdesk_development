@@ -272,6 +272,9 @@ Put this at the top of Application controller
 
 In config/initializers/devise.rb (requires server restart)
 	config.sign_out_via = :get
+	config.authentication_keys = [ :id ]
+    config.reset_password_keys = [ :id ]
+    config.confirmation_keys = [ :id ]
 
 Add confirmable
 	https://github.com/plataformatec/devise/wiki/How-To:-Add-:confirmable-to-Use
@@ -385,7 +388,7 @@ TO DO
 	- Work out how to do managers, employee lists and such /
 	- Foreign Key Migrations
 	- Write helper methods for ability encapsulated links 1/2
-		-destroy not working
+		-needs to be rerwritten after pundit
 	- Define Lookups for all controllers
 	- Strong Parameters for each controller
 	- Update db config for ancestry
@@ -394,8 +397,8 @@ TO DO
 		-should ticket type and priority also have table and controllers?
 	- Add ticket comment not working /
 	- Ticket Type is FAQ (like knowledge base for employees)
-	- Remove ticket_category_id from ticket_detail, and make it a look up through ticket_subcategory
-		-Write JS lookup
+	- Rewrite ticket categories using has_ancestry
+		-define a root, and then three top level categories for each type of user, eg Maintenance, IT, H&S
 	- Googlemaps
 		- https://binarapps.com/blog/integration-of-googlemaps-in-rails-4/
 		- https://github.com/apneadiving/Google-Maps-for-Rails

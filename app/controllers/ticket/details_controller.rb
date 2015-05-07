@@ -1,6 +1,6 @@
 class Ticket::DetailsController < ApplicationController
 
-  load_and_authorize_resource :class => Ticket::Detail
+  #load_and_authorize_resource :class => Ticket::Detail
 
   before_action :set_ticket_detail, only: [:show, :edit, :update, :destroy]
   before_filter :set_lookups, only: [:edit, :update, :new]

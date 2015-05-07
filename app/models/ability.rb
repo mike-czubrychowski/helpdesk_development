@@ -42,13 +42,12 @@ class Ability
             can [:read, :index, :show], Location, :id => location.id
         end
 
+        can :read, People.all #where(store_detail_id: self.person.store_detail_id)
+        can :read, User.all
         #can :manage, [Ticket::Detail.all, ]
         #can :manage, Location.all#, user.location.subtree_ids)
         
 
-        can :manage, Person, ["store_detail_id = 598"] do |person|
-            person.store_detail_id == 598
-        end
         #can [:read, :edit], Ticket::Detail.where("location_id = 93")
         #cannot :index, Ticket::Detail.all
         #.where("store_detail_id IN (?)", user.sublocations.map{|id| id.id})

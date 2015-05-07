@@ -1,6 +1,6 @@
 class PeopleController < ApplicationController
 
-  load_and_authorize_resource 
+  #load_and_authorize_resource 
   before_action :set_person, only: [:show, :edit, :update, :destroy]
 
   # GET /people
@@ -51,6 +51,7 @@ class PeopleController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_person
       @person = Person.find(params[:id])
+      @ticket_details = @person.tickets
       @people = @person.employees
     end
 

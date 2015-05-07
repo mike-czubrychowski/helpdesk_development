@@ -41,7 +41,6 @@ Rails.application.routes.draw do
 
   
   resources :organisations
-
   resources :roles
   resources :assignments
   resources :people

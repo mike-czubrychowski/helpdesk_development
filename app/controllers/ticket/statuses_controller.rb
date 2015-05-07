@@ -1,6 +1,6 @@
 class Ticket::StatusesController < ApplicationController
 
-  load_and_authorize_resource 
+  #load_and_authorize_resource 
   before_action :set_ticket_status, only: [:show, :edit, :update, :destroy]
 
   # GET /ticket/statuses

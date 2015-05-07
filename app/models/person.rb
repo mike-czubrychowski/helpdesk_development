@@ -37,11 +37,18 @@ class Person < ActiveRecord::Base
     begin
       if self.is_manager? then
         Location.find_by(manager_id: self.id)
+      elsif self.user.role == "superadmin"
+        Location.where(ancestry: nil).first #this should always locate the root
+      elsif self.user.role == "helpdesk"
+        self.user.organisation.location
+      elsif self.user.role == "thirdparty"
+        self.user.organisation.location
+        
       else
         Location.find(self.store_detail.location_id)
       end
     rescue 
-      nil
+      Location.find(self.store_detail.location_id)
     end
     
   end
@@ -79,6 +86,14 @@ class Person < ActiveRecord::Base
       nil
     end
     
+  end
+
+  def tickets
+    begin
+      self.user.tickets
+    rescue 
+      nil
+    end
   end
 
 

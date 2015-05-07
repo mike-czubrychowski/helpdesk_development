@@ -14,43 +14,46 @@
 </div>
 
 
-  <div class = "col-md-3">
+<div class = "col-md-3">
 
-    <strong>Startdate:</strong>
-      <%= @person.startdate %>
-    </p>
+  <strong>Startdate:</strong>
+    <%= @person.startdate %>
+  </p>
 
-    <p>
-      <strong>Leavedate:</strong>
-      <%= @person.leavedate %>
-    </p>
-
-
-    <p>
-      <strong>Jobtitle:</strong>
-      <%= @person.jobtitle %>
-    </p>
-
-    <p>
-      <strong>Manager:</strong>
-      <%= link_if_you_can(:read, @person.manager) %>
-    </p>
+  <p>
+    <strong>Leavedate:</strong>
+    <%= @person.leavedate %>
+  </p>
 
 
-    <p>
-      <strong>Phone:</strong>
-      <%= @person.phone %>
-    </p>
+  <p>
+    <strong>Jobtitle:</strong>
+    <%= @person.jobtitle %>
+  </p>
 
-    <p>
-      <strong>Email:</strong>
-      <%= @person.email %>
-    </p>
-  </div>
-  <div class = "col-md-9">
-      <%= render 'people/indexlist' %>
-  </div>
+  <p>
+    <strong>Manager:</strong>
+    <%= link_if_you_can(:read, @person.manager) %>
+  </p>
 
+
+  <p>
+    <strong>Phone:</strong>
+    <%= @person.phone %>
+  </p>
+
+  <p>
+    <strong>Email:</strong>
+    <%= @person.email %>
+  </p>
+</div>
+<div class = "col-md-9">
+    <%= render 'people/indexlist' %>
+</div>
+
+<div class = "col-md-12">  
+  <%= render :partial => 'ticket/details/indexlist' %>
+</div>
 
 
   <%= link_to people_path do %><i class ="fa fa-arrow-left"></i><% end -%> |

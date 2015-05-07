@@ -11,7 +11,7 @@ class Ticket::Detail < ActiveRecord::Base
   belongs_to :ticket_status, 					 class_name: "Ticket::Status",       foreign_key: "ticket_status_id", 								inverse_of: :tickets
   has_many   :ticket_status_histories,   class_name: "Ticket::StatusHistory",                    inverse_of: :ticket_detail    
   has_many   :comments, 				       class_name: "Ticket::Comment",      foreign_key: "ticket_detail_id", 			inverse_of: :ticket
-  belongs_to :created_by,				       class_name: "User",                 foreign_key: "created_by",  inverse_of: :tickets
+  belongs_to :created_by,				       class_name: "User",                 foreign_key: "created_by",  inverse_of: :ticket_details
  
   has_many   :ticket_user_assignments, class_name: "Ticket::UserAssignment",   foreign_key: "ticket_detail_id",   inverse_of: :ticket_detail 
   has_many	 :users, class_name: "User", 				:through => :ticket_user_assignments
@@ -55,37 +55,44 @@ class Ticket::Detail < ActiveRecord::Base
   end
 
   def time_taken
+    #Move this function to status_history or DB
+    begin
+      time_arr= ActiveRecord::Base.connection.select_all("
+           SELECT 
+            sh.ticket_detail_id
+          , sh.from as starttime
+          , sh.to as endtime
+         FROM ticket_status_histories sh
+        JOIN ticket_statuses s 
+        ON sh.ticket_status_id = s.id 
+        WHERE sh.ticket_detail_id = #{self.id} and time_tracked = 1;
+      ")
 
-    time_arr= ActiveRecord::Base.connection.select_all("
-         SELECT 
-          sh.ticket_detail_id
-        , sh.from as starttime
-        , sh.to as endtime
-       FROM ticket_status_histories sh
-      JOIN ticket_statuses s 
-      ON sh.ticket_status_id = s.id 
-      WHERE sh.ticket_detail_id = #{self.id} and time_tracked = 1;
-    ")
+      openingtime = 0.375
+      closingtime = 0.75
+      tmp_time_accrued = 0
 
-    openingtime = 0.375
-    closingtime = 0.75
-    tmp_time_accrued = 0
+      (0..time_arr.rows.count-1).each do |i|
+        #how to do this in mysql
+        #set starttime
+        #set end time
+        #REPEAT
+        # Set startime = DATE_ADD(startime, INTERVAL 1 DAY)
+        # UNTIL startime > endtime END REPEAT;
 
-    (0..time_arr.rows.count-1).each do |i|
-      
+        starttime = time_arr.rows[i][1]
+        endtime = time_arr.rows[i][2] || DateTime.now #doing this rather than using CURRENT_TIMESTAMP() in SQL means that daylight saving is handled.
+           
 
-      starttime = time_arr.rows[i][1]
-      endtime = time_arr.rows[i][2] || DateTime.now #doing this rather than using CURRENT_TIMESTAMP() in SQL means that daylight saving is handled.
-         
+        tmp_time_accrued = tmp_time_accrued + time_accrued(starttime, endtime, openingtime, closingtime)
+      end
 
-      tmp_time_accrued = tmp_time_accrued + time_accrued(starttime, endtime, openingtime, closingtime)
+      hours = (tmp_time_accrued * 24).to_i
+      minutes = Time.at(tmp_time_accrued * (60 * 60 * 24)).utc.strftime("%M:%S")
+      hours.to_s + ":" + minutes.to_s
+    rescue
+      '00:00:00'
     end
-
-    hours = (tmp_time_accrued * 24).to_i
-    minutes = Time.at(tmp_time_accrued * (60 * 60 * 24)).utc.strftime("%M:%S")
-    hours.to_s + ":" + minutes.to_s
-    #tmp_time_accrued.to_f.to_s + '  ' + ((holdtime.to_f) / (60 * 60 * 24)).to_s
-
 
   end
 
@@ -107,16 +114,13 @@ class Ticket::Detail < ActiveRecord::Base
 
     period.each do |d|
       
-      puts '--------'
-      puts tmp_time_accrued
-      puts d
+      
       d = d.to_datetime
 
       tmp_open = d + openingtime 
       tmp_close = d + closingtime 
       
-      puts 'opens ' + tmp_open.to_s
-      puts 'close ' + tmp_close.to_s 
+      
     
       case 
         when starttime < tmp_open 
@@ -127,7 +131,7 @@ class Ticket::Detail < ActiveRecord::Base
           tmp_start = starttime.to_datetime
       end
 
-      puts tmp_start
+      
 
       case 
           
@@ -139,22 +143,15 @@ class Ticket::Detail < ActiveRecord::Base
           tmp_end = endtime.to_datetime
       end
 
-      puts tmp_end
-      puts '---time diff'
-      puts tmp_end - tmp_start
-
-      puts '-------Saturday theyre paying'
-      puts d.saturday?
-      puts d.sunday?
-
+      
       if d.saturday? or d.sunday? then 
         #or !d.holiday?(:gb)
+        #in mysql you can use date_format to get the weekday or weekday name using %w or %W respectively
       else
         tmp_time_accrued = tmp_time_accrued + (tmp_end - tmp_start)
       end
 
-      puts 'accrued'
-      puts tmp_time_accrued
+      
         
       
     end
@@ -162,11 +159,7 @@ class Ticket::Detail < ActiveRecord::Base
     
     tmp_time_accrued.to_f
 
-    # = tmp_time_accrued.to_f - ((holdtime.to_f) / (60 * 60 * 24))
-    #hours = (tmp_time_accrued * 24).to_i
-    #minutes = Time.at(tmp_time_accrued * (60 * 60 * 24)).utc.strftime("%M:%S")
-    #hours.to_s + ":" + minutes.to_s
-    #tmp_time_accrued.to_f.to_s + '  ' + ((holdtime.to_f) / (60 * 60 * 24)).to_s
+    
 
   end
 

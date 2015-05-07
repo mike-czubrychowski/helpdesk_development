@@ -1,0 +1,100 @@
+CN Helpdesk Demo
+-----------------
+
+Login details
+
+Superadmin 34588/popopopo  
+Helpdesk User 21780/popopopo 
+Store User 27244/popopopo 
+
+This is a basic working demo.  You will find pages which don't work!
+It's a proof of concept at this stage, but I reckon it would take about 6 weeks to get this up and running.  This may prove quicker than integrating an off the shelf site: you'd typically expect an 8 week turn around, plus there is customisation work, eg to allow single sign on.
+
+These views all look basically the same, but demonstrate how helpdesk, thirdparty, stores, or individual users would see tickets appropriate to them
+
+Ticket view http://192.168.16.59:3004/ticket/details
+Third party http://192.168.16.59:3004/ticket/categories/1
+Store view http://192.168.16.59:3004/store/details/25
+Tickets by user http://192.168.16.59:3004/people/1523
+
+
+Advantages of doing this in house
+---------------------------------
+-Ops Structure/data already in there from previous work.  Only a couple of days required to write and test a few new bits.
+-Data structure similar to both Operanet and MSDB tickets.  I could import all that once the site is up and running.
+-Immediately ready to roll to stores, who would have a customised view and be able to log tickets directly and receive updates. Login via App Launcher built in 
+-Keeps existing ability to directly VNC into our tills, but doesn't expose this system outside of our network.
+-Mobile ready contractor view (for smart phones obvs)
+-Custom mail import routines to link up with Micros, Cloud etc and other third party tickets to create/update tickets automatically
+-0 cost
+
+You'll notice it's fairly slow, at the moment it is running on my development server which is (deliberately) slow for debugging. It also has not be optimized and loads most of the database to display each page.
+
+
+What's in the test site:
+------------------------
+Database structure, users.  
+Example data.
+A few example pages
+Ops Structure
+
+What's not
+----------
+Permissions (everyone can see everything)
+Viewing tickets by Type or Priority (this would work exactly as viewing by Status, so was no need to code at this stage), eg Critical Priority or   Complaints
+Incoming mail processing
+Reports
+Store Asset and Till data (tables are empty - scoping reqd)
+Link to SAP (beyond scope of this demo, but would be possible in future after landing the project)
+Javascript doesn't always work, just reload the page
+
+Tasks to do
+-----------
+This is a pretty tight schedule, but do-able depending on everyone's requirements.  It would be best to add in a few weeks for contingencies.
+
+Notification system (1-2 weeks)
+-Setup asynchrous mail send/receive
+-Incoming mail processing function
+-Setup alerting method for new tickets and updates, and an auto refesh of DataTables
+-Test on our webserver
+
+Permissions (1 week -)
+-Setup permissions using the 'Pundit' library (existing permissions model not flexible enough)
+-Speed up page load 
+-Limit views so that users see tickets in categories they have access to in locations they have access to. Eg
+	-The Cloud can see tickets in 'The Cloud' category, in the UK
+	-CN IT can see all IT tickets in the UK
+	-Store managers can see all tickets, in their store. Similary for AMs
+
+Data (2-3 days)
+-Build a couple of new imports w Mick, and consider what to do about data currently in MSDB
+-Write and test SQL import scripts
+
+SLAs (2-3 days +)
+-Time taken per ticket is now correctly calculated, but in software not DB.  This needs moving to DB for reporting to work efficiently.
+-Build some test reports etc to see how efficient this is, and whether there's anything we can't do through standard SQL
+
+Asset tracking (scope reqd)
+-Link to particular ticket types, eg new Till supplied, must have an asset record associated
+-Links into Prism or some such?
+
+Interface (1 week)
+-Finish interface
+-Build admin panel
+-Build Dashboard of metrics and other handy stuff
+-Test VNC 
+
+Round up, Test (1-2 weeks)
+-Deploy to test site, setup CN users and test
+
+
+HOW TO LAUNCH THE DEV SITE IF REQD
+---------------------------------
+
+Log on to server 20 w Domain Admin password (Zoli or Mick can do this)
+open a new CMD window and type the following
+
+cd \Github\helpdesk-development
+rails s -p 3004 -b 192.168.16.59
+
+
