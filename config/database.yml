@@ -8,5 +8,5 @@ development:
   adapter: mysql2
   host: localhost
   database: helpdesk_development
-  username: Ruby
-  password: RubyMurr4y
+  username: hd_Ruby
+  password: Nero1234
