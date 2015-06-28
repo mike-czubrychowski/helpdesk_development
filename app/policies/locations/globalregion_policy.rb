@@ -1,0 +1,2 @@
+class GlobalregionPolicy < LocationPolicy
+end

@@ -1,10 +1,14 @@
 class ApplicationPolicy
-  attr_reader :user, :record
 
-  def initialize(user, record)
-    raise Pundit::NotAuthorizedError, "must be logged in" unless user
-    @user = user
-    @record = record
+  #This is required because the line in config.rb to autoload policy scripts doesn't fully work for some reason
+  extend ActiveSupport::Autoload
+  autoload :Tickets
+  
+  attr_reader :current_user, :record
+
+  def initialize(current_user, model)
+    @current_user = current_user
+    @record = model
   end
 
   def index?
@@ -36,14 +40,14 @@ class ApplicationPolicy
   end
 
   def scope
-    Pundit.policy_scope!(user, record.class)
+    Pundit.policy_scope!(current_user, record.class)
   end
 
   class Scope
-    attr_reader :user, :scope
+    attr_reader :current_user, :scope
 
-    def initialize(user, scope)
-      @user = user
+    def initialize(current_user, scope)
+      @current_user = current_user
       @scope = scope
     end
 
@@ -52,5 +56,3 @@ class ApplicationPolicy
     end
   end
 end
-
-

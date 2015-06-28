@@ -145,8 +145,9 @@ Define a namespace place in routes.rb:
 
 
 Move submodels, area.rb region.rb etc to subfolder called locations.
-Add this line to config/application.rb:
+Add these line to config/application.rb:
 	config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**/}')]
+	config.autoload_paths += Dir[Rails.root.join('app', 'policies', '{**/}')]
 
 This adds in models in subfolders and lets rails find area.rb etc.
 
@@ -288,6 +289,7 @@ Add confirmable
 
 CanCan
 ----------------
+!!!DEPRECIATED!!! SEE PUNDIT
 Install Cancan, setup ability so users can only see people in their store
 	bundle install
 	rails g cancan:ability
@@ -322,6 +324,37 @@ Grant these basic abilities for test:
     can :access, :rails_admin 
     can :dashboard, :all
     can :manage, :all
+
+ Pundit
+ ------------------
+ add pundit gem, bundle and do:
+ rails g pundit:install
+ Make sure folders are autoloaded for STI as with models (see above)
+ 
+ Then make sure application policy & scope uses the below:
+ 	attr_reader :current_user, :record
+
+  def initialize(current_user, model)
+    @current_user = current_user
+    @record = model
+  end
+
+ In ApplicationController add:
+ 	include Pundit
+   	rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  	after_filter :verify_authorized
+  	after_filter :verify_policy_scoped, only: :index
+
+ In individual controllers you have to make sure that each action is authorized and scoped. First add in
+ 	before_filter :authenticate_user!
+    after_action :verify_authorized
+ 
+ Scoping only applies to index like actions, for actions which select individual records it's controlled by that action's policy. To scope do something like:
+ 	@locations = policy_scope(Location) 
+ There's no need to do Location.all.  Equally you can do policy_scope(@user.posts) in views or such. (see docs)
+ Once you have queried and found eg your record(s), include the line:
+ 	authorize @locations
+
 
 Engineyard
 -----------------

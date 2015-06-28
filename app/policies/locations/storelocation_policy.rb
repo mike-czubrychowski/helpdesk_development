@@ -1,0 +1,2 @@
+class StorelocationPolicy < LocationPolicy
+end

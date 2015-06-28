@@ -4,11 +4,11 @@
 	</div>
 	<div class = "col-md-4 col-xs-12">
 		<h2>
-			<% if can? :create, @ticket_comments %>
+			
 		        <%= link_to new_ticket_comment_path, :class => 'btn btn-primary', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
 		            <i class ="fa fa-plus"></i>
 		        <% end -%>
-		    <% end %>
+		   
 		</h2>
 	</div>
 </div>

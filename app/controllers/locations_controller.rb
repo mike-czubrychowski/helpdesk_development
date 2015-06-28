@@ -2,13 +2,17 @@ class LocationsController < ApplicationController
   
   #load_and_authorize_resource
 
+  before_filter :authenticate_user!
+  after_action :verify_authorized
+
   before_action :set_location_category
   before_action :set_location, only: [:show, :edit, :update, :destroy]
  
   # GET /locations
   def index
     #Required for STI
-    @locations = location_category.constantize.inclusive#where("id IN (?)", current_user.location.subtree_ids)
+    @locations = policy_scope(location_category.constantize.inclusive)
+    authorize @locations#where("id IN (?)", current_user.location.subtree_ids)
   end
 
   # GET /locations/1
@@ -18,6 +22,7 @@ class LocationsController < ApplicationController
   # GET /locations/new
   def new
     @location = Location.new
+    authorize @location
   end
 
   # GET /locations/1/edit
@@ -27,6 +32,7 @@ class LocationsController < ApplicationController
   # POST /locations
   def create
     @location = Location.new(location_params)
+    authorize @location
 
     if @location.save
       redirect_to @location, notice: 'Location was successfully created.'
@@ -49,9 +55,11 @@ class LocationsController < ApplicationController
     @location.destroy
     redirect_to locations_url, notice: 'Location was successfully destroyed.'
   end
+  
   private
     def set_location
       @location = Location.inclusive.find(params[:id])#.where("id IN (?)", current_user.location.subtree_ids)
+      authorize @location
       @ticket_details = @location.tickets
       @people = @location.employees
       

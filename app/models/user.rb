@@ -14,32 +14,21 @@ class User < ActiveRecord::Base
   has_one :store_detail, :through => :person 
   belongs_to :person, inverse_of: :user
   belongs_to :organisation, inverse_of: :users
+  belongs_to :location, inverse_of: :users
 
 
   scope :inclusive, -> {includes(:person).includes(:store_detail).includes(:tickets)}
 
   delegate :name, :to => :person, :allow_nil => true
+  delegate :name, :to => :role, :allow_nil => true
   
   def has_role?(role_sym)
+    #not working
 	 roles.any? { |r| r.name.underscore.to_sym == role_sym }
   end
 
-  def role
-    begin
-      self.assignment.role.name
-    rescue
-      nil
-    end
-  end
-
-  def location
-    begin
-      self.person.location
-    rescue 
-      nil
-    end
-  end
-
+  
+  
   def tickets
     begin
       self.ticket_details

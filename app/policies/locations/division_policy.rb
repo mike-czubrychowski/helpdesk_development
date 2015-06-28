@@ -1,0 +1,2 @@
+class DivisionPolicy < LocationPolicy
+end

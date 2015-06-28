@@ -2,14 +2,30 @@ class Ticket::DetailsController < ApplicationController
 
   #load_and_authorize_resource :class => Ticket::Detail
 
+  before_filter :authenticate_user!
+  after_action :verify_authorized
+
+  #include Concerns::PunditNamespaces
+
+  #def pundit_namespace
+  #  Ticket
+  #end
+
+
+  # def self.policy_class
+  #   TicketDetailPolicy
+  # end
+
+
   before_action :set_ticket_detail, only: [:show, :edit, :update, :destroy]
   before_filter :set_lookups, only: [:edit, :update, :new]
 
 
   # GET /ticket/details
   def index
-    @ticket_details = Ticket::Detail.inclusive
+    @ticket_details = policy_scope(Ticket::Detail.inclusive)
     #authorize! :index, @ticket_details
+    authorize @ticket_details
     #
   end
 
@@ -67,6 +83,8 @@ class Ticket::DetailsController < ApplicationController
     def set_ticket_detail
       @ticket_detail = Ticket::Detail.find(params[:id])
       @ticket_comments = Ticket::Comment.where("ticket_detail_id = ?", @ticket_detail.id)
+
+      authorize @ticket_detail
     end
 
     def set_lookups
@@ -86,6 +104,8 @@ class Ticket::DetailsController < ApplicationController
         @ticket_user_assignments = Ticket::UserAssignment.where("ticket_detail_id = ?", @ticket_detail.id)
       end
 
+
+
       
 
     end
@@ -98,5 +118,10 @@ class Ticket::DetailsController < ApplicationController
                                             comments_attributes: [:ticket_detail_id, :name, :description, :type, 
                                                 :created_by_id, :updated_by_id],
                                             ticket_user_assignments_attributes: [:ticket_detail_id, :user_id])
+    end
+
+    def user_not_authorized
+      flash[:alert] = "You are not authorized to perform this action."
+      redirect_to(request.referrer || root_path)
     end
 end

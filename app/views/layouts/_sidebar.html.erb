@@ -23,8 +23,9 @@
                 </a>
                 <ul class="sub">
                     <% Location.categories.each do |category| %>
-                        <% if can? :read, category %><li><%= link_to category.capitalize, [category.downcase.pluralize] %></li><% end %>
-                    <% end %>
+                    <!-- scope categories here -->
+                        <li><%= link_to category.capitalize, [category.downcase.pluralize] %></li><% end %>
+                    
                     <li><a  href="">Regions</a></li>
                     <li><a  href="">Divisionss</a></li>
                 </ul>

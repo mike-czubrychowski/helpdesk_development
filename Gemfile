@@ -10,7 +10,8 @@ gem 'ancestry'
 
 
 gem 'devise'
-gem 'cancancan', '~> 1.10'
+gem 'pundit', :git => 'https://github.com/elabs/pundit.git', :branch => "namespaces"
+#gem 'cancancan', '~> 1.10'
 gem 'paper_trail', '~> 3.0.6'
 
 

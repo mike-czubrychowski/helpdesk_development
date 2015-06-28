@@ -32,6 +32,9 @@ class DeviseCreateUsers < ActiveRecord::Migration
 
       t.references :person, unique: true
       t.references :organisation, default: 0, null: false
+      t.references :location, default: 0, null: false
+      
+      end
 
 
       t.timestamps

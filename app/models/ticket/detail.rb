@@ -3,6 +3,8 @@ class Ticket::Detail < ActiveRecord::Base
   include ActiveModel::Dirty
   #require 'date' 
 
+  
+
   belongs_to :location,																  				inverse_of: :ticket_details
   belongs_to :parent,   				class_name: "Ticket::Detail",                             	inverse_of: :children
   has_many 	 :children,   			class_name: "Ticket::Detail",              foreign_key: "parent_id", 	inverse_of: :parent  
@@ -29,6 +31,7 @@ class Ticket::Detail < ActiveRecord::Base
   delegate :name, :to => :ticket_status, :allow_nil => true, :prefix => "ticket_status"
   delegate :name, :to => :location, :allow_nil => true, :prefix => true
   delegate :name, :to => :parent, :allow_nil => true, :prefix => true
+  delegate :name, :to => :created_by, :allow_nil => true, :prefix => "created_by"
 
   scope :inclusive, -> { includes(:ticket_subcategory).includes(:ticket_category).includes(:ticket_status).includes(:location)}
   
@@ -167,15 +170,7 @@ class Ticket::Detail < ActiveRecord::Base
 
   
 
-  def created_by_name
-    begin
-      #not working
-      self.created_by.person.name
-    rescue
-      nil
-    end
-  end
 
- 
+  
 
 end

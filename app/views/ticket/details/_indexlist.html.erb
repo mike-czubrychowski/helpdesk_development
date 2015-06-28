@@ -12,31 +12,21 @@
       	<th>Priority</th>
       	<th>Status</th>
       	<th>Logged by</th>
-        	<th></th>
       </tr>
     </thead>
 
     <tbody>
       <% @ticket_details.each do |ticket_detail| %>
         <tr>
-  	        <td><%= link_if_you_can(:read, ticket_detail.location) %></td>
-  	        <td><%= link_if_you_can(:edit, ticket_detail) %>
-  	        <td><%= ticket_detail.parent_name %></td>
+  	        <td><%= link_to ticket_detail.location.name, ticket_detail.location %></td>
+  	        <td><%= link_to ticket_detail.name, [:edit, ticket_detail] %>
+  	        <td><%= link_to ticket_detail.parent_name, ticket_detail.parent %></td>
   	        <td><%= ticket_detail.ticket_type %></td>
-  	        <td><%= link_if_you_can(:read, ticket_detail.ticket_category) %></td>
-  	        <td><%= link_if_you_can(:read, ticket_detail.ticket_subcategory) %></td>
+  	        <td><%= link_to ticket_detail.ticket_category_name, ticket_detail.ticket_category %></td>
+  	        <td><%= link_to ticket_detail.ticket_subcategory_name, ticket_detail.ticket_subcategory %></td>
   	        <td><%= ticket_detail.ticket_priority %></td>
-  	        <td><%= link_if_you_can(:read, ticket_detail.ticket_status)%></td>
-  	        <td><%= link_if_you_can(:read, ticket_detail.created_by) %></td>
-
-          <td>
-
-          	<%= link_if_you_can(:read, ticket_detail, 'fa fa-eye') %>
-          	<%= link_if_you_can(:edit, ticket_detail, 'fa fa-pencil') %>
-  			    <%= link_if_you_can(:destroy, ticket_detail, 'fa fa-times') %>
-
-          </td>
-          
+  	        <td><%= link_to ticket_detail.ticket_status_name, ticket_detail.ticket_status %></td>
+  	        <td><%= link_to ticket_detail.created_by_name, ticket_detail.created_by %></td>
         </tr>
       <% end %>
     </tbody>

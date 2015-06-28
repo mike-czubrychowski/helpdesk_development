@@ -11,6 +11,7 @@ class Location < ActiveRecord::Base
   has_many :ticket_categories,   class_name: "Ticket::Category", through: :ticket_details
   has_many :ticket_subcategories,   class_name: "Ticket::Subcategory", through: :ticket_details
   has_many :organisations, inverse_of: :location
+  has_many :users, inverse_of: :location
 
   scope :inclusive, -> {includes(:manager).includes(:ticket_details)}#.includes(:ticket_comments).includes(:ticket_statuses).includes(:ticket_categories).includes(:ticket_subcategories)}
   scope :opentickets, -> {includes(:ticket_details)}
@@ -38,6 +39,16 @@ class Location < ActiveRecord::Base
       nil
     end
   end
+
+  def manager_name
+    #only necessary because some managers are nil
+    begin
+      Person.find(self.manager.id).name
+    rescue 
+      nil
+    end
+  end
+
 
   def friendly_name
     begin

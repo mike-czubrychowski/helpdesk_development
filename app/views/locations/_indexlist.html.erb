@@ -12,10 +12,10 @@
     <tbody>
       <% @locations.each do |location| %>
         <tr>
-  	        <td><%= link_if_you_can(:read, location) %></td>
-  	        <td><%= link_if_you_can(:read, location.parent) %></td>
-  	        <td><%= link_to_location_type_if_you_can(:read, location) %> </td>
-  	        <td><%= link_if_you_can(:read, location.manager) %></td>
+  	        <td><%= link_to location.name, location %></td>
+  	        <td><%= link_to location.parent_name, location.parent %></td>
+  	        <td><%= link_to location.category %> </td>
+  	        <td><%= link_to location.manager_name, location.manager %></td>
   	        	
         </tr>
       <% end %>
