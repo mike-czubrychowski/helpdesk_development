@@ -5,7 +5,11 @@ class Ticket::DetailsController < ApplicationController
   before_filter :authenticate_user!
   after_action :verify_authorized
 
- 
+  include Concerns::PunditNamespaces
+
+  def pundit_namespace
+    Ticket
+  end
 
   before_action :set_ticket_detail, only: [:show, :edit, :update, :destroy]
   before_filter :set_lookups, only: [:edit, :update, :new]

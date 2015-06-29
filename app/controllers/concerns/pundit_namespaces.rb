@@ -38,6 +38,8 @@ module Concerns::PunditNamespaces
     # To set the namespace, overwrite this method in your controller
     def pundit_namespace
       Object
+      puts '----------'
+      puts Object
     end
  
     def policies
@@ -62,17 +64,19 @@ module Concerns::PunditNamespaces
     def [](object)
       policies[object] ||= begin
         policy = Pundit::PolicyFinder.new(object).policy
-        puts '--------'
-        
+        p 'POLICY'
+        puts object.class 
+        puts object.class == Module
 
-        #puts policy.to_s.split('::')[1].to_s
-        
-        
-        policy = "#{@namespace}::#{policy.to_s}".constantize
-        
+        puts "#{@namespace}::#{policy.to_s}"
 
-        
-        puts policy.name
+        if policy.to_s.blank?
+          policy = "#{object.class}".constantize
+        else
+          policy = "#{@namespace}::#{policy.to_s}".constantize
+        end
+        #policy = object.class.name.constantize
+        puts policy
         policy.new(@user, object)
       end
     end
@@ -90,12 +94,23 @@ module Concerns::PunditNamespaces
  
     def [](object)
       policy_scopes[object] ||= begin
-        puts 'HELLLO'
-        puts object
-        puts @namespace
-        puts @policy.to_s
+        p 'SCOPE'
         policy = Pundit::PolicyFinder.new(object).scope
-        policy = "#{@namespace}::#{policy.to_s}".constantize
+        puts object.class
+        puts object.is_a?(ActiveRecord::Relation)
+        
+        if policy.to_s.blank?
+          policy = "#{object.class}".constantize
+        
+        else
+          policy = "#{@namespace}::#{policy.to_s}".constantize
+        end
+
+        if object.is_a?(ActiveRecord::Relation)
+          policy = "User".constantize
+        end
+
+        puts policy.to_s
         policy.new(@user, object).resolve
       end
     end

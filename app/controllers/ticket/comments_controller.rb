@@ -4,10 +4,15 @@ class Ticket::CommentsController < ApplicationController
   before_action :set_ticket_comment, only: [:show, :edit, :update, :destroy]
   before_filter :set_lookups, only: [:edit, :update, :new]
 
+  include Concerns::PunditNamespaces
+
+  def pundit_namespace
+    Ticket
+  end
 
   # GET /ticket/comments
   def index
-    @ticket_comments = policy_scope(Ticket::Comment.all)
+    @ticket_comments = Ticket::Comment.all
     authorize @ticket_comments
   end
 
