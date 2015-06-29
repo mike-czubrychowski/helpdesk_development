@@ -59,9 +59,12 @@ class LocationsController < ApplicationController
   private
     def set_location
       @location = Location.inclusive.find(params[:id])#.where("id IN (?)", current_user.location.subtree_ids)
-      authorize @location
       @ticket_details = @location.tickets
       @people = @location.employees
+
+      authorize @location
+      #authorize @ticket_details
+      authorize @people 
       
     end
 

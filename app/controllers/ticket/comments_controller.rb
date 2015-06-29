@@ -7,7 +7,8 @@ class Ticket::CommentsController < ApplicationController
 
   # GET /ticket/comments
   def index
-    @ticket_comments = Ticket::Comment.all
+    @ticket_comments = policy_scope(Ticket::Comment.all)
+    authorize @ticket_comments
   end
 
   # GET /ticket/comments/1

@@ -4,7 +4,6 @@
     	<th>Name</th>
     	<th>Description</th>
     	<th>Created by</th>
-      	<th></th>
     </tr>
   </thead>
 
@@ -16,14 +15,6 @@
 	        <td><%= ticket_comment.created_by %></td>
 
 
-        <td>
- 
-	        <%= link_if_you_can(:edit, ticket_comment, 'fa fa-pencil') %>
-	        <%= link_if_you_can(:destroy, ticket_comment, 'fa fa-times') %>
-	        
-
-
-        </td>
         
       </tr>
     <% end %>

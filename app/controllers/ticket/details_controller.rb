@@ -5,17 +5,7 @@ class Ticket::DetailsController < ApplicationController
   before_filter :authenticate_user!
   after_action :verify_authorized
 
-  #include Concerns::PunditNamespaces
-
-  #def pundit_namespace
-  #  Ticket
-  #end
-
-
-  # def self.policy_class
-  #   TicketDetailPolicy
-  # end
-
+ 
 
   before_action :set_ticket_detail, only: [:show, :edit, :update, :destroy]
   before_filter :set_lookups, only: [:edit, :update, :new]
@@ -42,7 +32,8 @@ class Ticket::DetailsController < ApplicationController
                                         :ticket_subcategory_id => params[:ticket_subcategory_id],
                                         :ticket_status_id => params[:ticket_status_id]
 
-                                        ) 
+                                        )
+    authorize @ticket_details 
   end
 
   # GET /ticket/details/1/edit
@@ -53,6 +44,7 @@ class Ticket::DetailsController < ApplicationController
   # POST /ticket/details
   def create
     @ticket_detail = Ticket::Detail.new(ticket_detail_params)
+    authorize @ticket_details
     @ticket_detail.created_by_id = 1
 
 
@@ -85,6 +77,7 @@ class Ticket::DetailsController < ApplicationController
       @ticket_comments = Ticket::Comment.where("ticket_detail_id = ?", @ticket_detail.id)
 
       authorize @ticket_detail
+      #authorize @ticket_comments
     end
 
     def set_lookups
