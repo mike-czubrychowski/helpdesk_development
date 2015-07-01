@@ -3,11 +3,7 @@ Rails.application.routes.draw do
   
 
   
-  resources :ticket_slas
-
-  resources :ticket_types
-
-  resources :ticket_priorities
+  
 
   devise_for :users
   
@@ -39,7 +35,9 @@ Rails.application.routes.draw do
   resources :ticket_status_histories
   resources :ticket_categories
   #get :ticket_categories, controller: 'ticket_categories', action: 'index'
-  resources :ticket_subcategories
+  resources :ticket_slas
+  resources :ticket_types
+  resources :ticket_priorities
   resources :ticket_statistics
 
 
@@ -55,7 +53,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'locations#index'
+  root 'ticket_details#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   include Pundit
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  before_filter :set_lookups, only: [:edit, :update, :new]
   after_filter :verify_authorized, unless: :devise_controller?
   #after_filter :verify_policy_scoped, only: :index
 
@@ -21,9 +20,7 @@ class ApplicationController < ActionController::Base
   #@locations = Location.all
   #@ticket_status_histories = TicketStatusHistory.inclusive
   private
-    def set_lookups
-      @ticket_categories = policy_scope(TicketCategory)
-    end
+    
 
     def user_not_authorized
       flash[:alert] = "You are not authorized to perform this action."

@@ -88,7 +88,7 @@ class TicketDetailsController < ApplicationController
       
      # @categories = nested_dropdown(@categories.arrange)
       @statuses = policy_scope(TicketStatus.where.not(:id => 1))
-      @parents = policy_scope(TicketDetail.inclusive)
+      
       @priorities = policy_scope(TicketPriority.all)
       @slas = TicketSla.all
       @types =   policy_scope(TicketType.all)
@@ -98,6 +98,7 @@ class TicketDetailsController < ApplicationController
         @ticket_comments = policy_scope(TicketComment.inclusive.where("ticket_detail_id = ?", @ticket_detail.id))
         @ticket_status_histories = policy_scope(TicketStatusHistory.inclusive.where("ticket_detail_id = ?", @ticket_detail.id))
         @ticket_user_assignments = policy_scope(TicketUserAssignment.inclusive.where("ticket_detail_id = ?", @ticket_detail.id)) 
+        @parents = policy_scope(TicketDetail.inclusive.where.not(id: @ticket_detail.id))
       end
 
 
