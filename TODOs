@@ -6,13 +6,15 @@ Finish off controller checking + models
 -Check scoping, joins, permissions finished
 -Make default views not include closed tickets, think about switching this
 -Follow-up Ticket // Clone to Knowledge base
--Add in parent categories to allow ticket to be transferred to other departments
--Ticket Category on Sidebar
+-Add in parent categories to allow ticket to be transferred to other departments /
+-Ticket Category on Sidebar /
 -change storelocations to stores
 -make ticket_type and priority into tables /
 -make tickets have ancestry
-Model validation
-Time Taken for breached tickets
+-pundit perms on specific fields
+
+
+Time Taken for breached tickets /
 -Either a SQL view X
 -Or a Time_Taken Multiple tickets /
 -Test view, listing tickets as breached /
@@ -20,6 +22,26 @@ Time Taken for breached tickets
 -Constraint reqd so new status cannot be added; validation required on this plus error handling
 -Ticket_breach_criteria table: per category, per type, per priority breach criteria /
 --How does this work with category tree structure? ticket_sla_id inserted after each update
+
+Admin panels
+-Ticket_Categories
+-Ticket_Statuses
+-Ticket_Priorities
+-Ticket_SLA_Assignment
+-Organisations
+-User_Organisation_Assignment
+-View User Roles
+
+Populate the database correctly
+-Put in the foreign keys - can we move to 4.2 and do this natively?
+-set things not null
+-Write the SQL imports
+-Work out how to generate ancestry in SQL
+
+Model validation
+-Once done make sure we can move all to delegates
+
+
 Dashboard views
 -Breached / Near Breached Tickets (in various catgories, statuses, priorities)
 -Closed tickets, per person, per category, per status

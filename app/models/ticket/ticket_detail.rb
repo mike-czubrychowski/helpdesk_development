@@ -81,11 +81,17 @@ class TicketDetail < ActiveRecord::Base
   end
 
   def assign_sla
+    #Find an exactly matching SLA
     sla = TicketSlaAssignment.where(ticket_category_id: self.ticket_category_id, ticket_priority_id: self.ticket_priority_id, ticket_type_id: self.ticket_type_id) 
 
+    #Find the SLA of a parent category
     if sla.count != 1 then
       sla = TicketSlaAssignment.where("ticket_category_id IN (?)", self.ticket_category.ancestor_ids).where(ticket_priority_id: self.ticket_priority_id, ticket_type_id: self.ticket_type_id).last
     end
+
+    #If that still doesn't work, set it to Normal
+    #if sla.nil? then sla = TicketSlaAssignment.find(3)
+    
     puts sla
     self.ticket_sla_id = sla.ticket_sla_id
   end
