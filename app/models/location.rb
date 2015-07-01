@@ -1,25 +1,26 @@
 class Location < ActiveRecord::Base
 
-  enum category_id: {"Area" => 21, "Country" => 51, "Division" => 41, "Global Region" => 800, "Site" => 11, "Region" => 31, "Company" => 999, "Store " => 5} 
+  enum category_id: {"Area" => 21, "Country" => 51, "Division" => 41, "Global Region" => 800, "Site" => 11, "Region" => 31, "Company" => 999, "Store" => 5} 
 
   belongs_to :manager,  class_name: "Person"
  
 
-  has_many :ticket_details,     class_name: "Ticket::Detail",                        inverse_of: :location
-  has_many :ticket_comments,   class_name: "Ticket::Comment", through: :ticket_details
-  has_many :ticket_statuses,   class_name: "Ticket::Status", through: :ticket_details
-  has_many :ticket_categories,   class_name: "Ticket::Category", through: :ticket_details
-  has_many :ticket_subcategories,   class_name: "Ticket::Subcategory", through: :ticket_details
+  has_many :ticket_details, class_name: "TicketDetail", inverse_of: :location
+  has_many :ticket_comments, class_name: "TicketComment", through: :ticket_details
+  has_many :ticket_statuses, class_name: "TicketStatus", through: :ticket_details
+  has_many :ticket_categories, class_name: "TicketCategory", through: :ticket_details
   has_many :organisations, inverse_of: :location
   has_many :users, inverse_of: :location
 
-  scope :inclusive, -> {includes(:manager).includes(:ticket_details)}#.includes(:ticket_comments).includes(:ticket_statuses).includes(:ticket_categories).includes(:ticket_subcategories)}
+  scope :inclusive, -> {includes(:manager).includes(:ticket_details).includes(:ticket_statuses).includes(:ticket_categories)}#includes(:ticket_comments)
   scope :opentickets, -> {includes(:ticket_details)}
 
   delegate :name, :to => :manager, :allow_nil => true, :prefix => true
+  delegate :name, :to => :ticket_categories, :allow_nil => true, :prefix => true
+  delegate :name, :to => :ticket_statuses, :allow_nil => true, :prefix => true
 
 
-  ###### STI ###########
+  ###### STI ###############################################################
   has_ancestry
 
   self.inheritance_column = :category
@@ -28,7 +29,7 @@ class Location < ActiveRecord::Base
   	%w(World Globalregion Country Division Region Area Site Storelocation)
   end 
 
-  #######################
+  #########################################################################
 
   validates_associated :manager
 
@@ -64,7 +65,7 @@ class Location < ActiveRecord::Base
 
   def tickets
     begin
-      Ticket::Detail.where("location_id in (?)", self.subtree_ids)
+      TicketDetail.where("location_id in (?)", self.subtree_ids)
     rescue 
       nil
     end

@@ -5,7 +5,8 @@ class PeopleController < ApplicationController
 
   # GET /people
   def index
-    @people = Person.inclusive.accessible_by(current_ability)
+    @people = polciy_scope(Person.inclusive)
+    authorize @people
   end
 
   # GET /people/1
@@ -15,6 +16,7 @@ class PeopleController < ApplicationController
   # GET /people/new
   def new
     @person = Person.new
+    authorize @person
   end
 
   # GET /people/1/edit
@@ -24,7 +26,7 @@ class PeopleController < ApplicationController
   # POST /people
   def create
     @person = Person.new(person_params)
-
+    authorize @person
     if @person.save
       redirect_to @person, notice: 'Person was successfully created.'
     else
@@ -51,8 +53,9 @@ class PeopleController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_person
       @person = Person.find(params[:id])
-      @ticket_details = @person.tickets
-      @people = @person.employees
+      authorize @person
+      @ticket_details = policy_scope(@person.tickets) if @person.tickets
+      @people = policy_scope(@person.employees) if @person.employees
     end
 
     # Only allow a trusted parameter "white list" through.

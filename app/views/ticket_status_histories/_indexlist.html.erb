@@ -1,0 +1,33 @@
+<% if !@ticket_status_histories.nil? %>
+  <table class="table table-striped table-responsive" id ="ticket_status_histories" >
+    <thead>
+      <tr>
+  	    	<th>Status</th>
+  	    	<th>Date</th>
+  	    	<th>Updated by</th>
+  	      	<th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @ticket_status_histories.each do |ticket_status_history| %>
+        <tr>
+  	        
+
+  	        <td><%= ticket_status_history.ticket_status_name %></td>
+  	        <td><%= ticket_status_history.from %></td>
+  	        <td><%= ticket_status_history.updated_by %></td>
+
+          <td>
+       		<%= link_if_you_can(:destroy, ticket_status_history, 'fa fa-times') %>
+  	       
+
+          </td>
+          
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h4>Total Time Elapsed: <%= format_time(@ticket_detail.time_taken) %></h4> 
+<% end %>

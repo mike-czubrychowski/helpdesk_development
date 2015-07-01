@@ -1,0 +1,53 @@
+<div class="row">
+	<div class = "col-md-8 col-xs-12">
+		<h1>ticket_statuses</h1>
+	</div>
+	<div class = "col-md-4 col-xs-12">
+		<h2>
+			<%= link_to new_ticket_status_path, :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+	            <i class ="fa fa-plus"></i>
+	        <% end -%>
+	   
+		</h2>
+	</div>
+</div>
+
+<div class="row">
+	<table class="table table-striped table-responsive" id ="ticket_statuses" >
+	  <thead>
+	    <tr>
+		    	<th>Name</th>
+		    	<th>Order</th>
+		    	<th>Time tracked</th>
+		      	<th></th>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+	    <% @ticket_statuses.each do |ticket_status| %>
+	      <tr>
+		        <td><%= ticket_status.name %></td>
+		        <td><%= ticket_status.order %></td>
+		        <td><%= ticket_status.time_tracked %></td>
+	
+	        <td>
+	        	
+		          
+		        
+			    <%= link_to ticket_status_path(ticket_status), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-primary btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
+			      <i class ="fa fa-times"></i>
+			    <% end -%>
+				
+	        
+
+	        </td>
+	        
+	      </tr>
+	    <% end %>
+	  </tbody>
+	</table>
+</div>
+<br>
+<br>
+
+<%= link_to 'New Status', new_ticket_status_path %>

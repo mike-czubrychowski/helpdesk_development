@@ -1,0 +1,44 @@
+<% if !@ticket_details.nil? %>
+  <table class="table table-striped table-responsive" id ="ticket_details" >
+    <thead>
+      <tr>
+      	<th>Location</th>
+      	<th>Title</th>
+      	<th>Parent</th>
+      	<th>Type</th>
+      	<th>Category</th>
+      	<th>Priority</th>
+      	<th>Status</th>
+        <th>Time</th>
+      	<th>Logged by</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @ticket_details.each do |ticket_detail| %>
+        <tr>
+  	        <td><%= link_to ticket_detail.location_name, ticket_detail.location %></td>
+  	        <td><%= link_to ticket_detail.name, [:edit, ticket_detail] %>
+  	        <td><%= link_to ticket_detail.parent_name, ticket_detail.parent %></td>
+  	        <td data-order="<%= ticket_detail.ticket_type_order %>"><%= link_to ticket_detail.ticket_type_name, ticket_detail.ticket_type %></td>
+  	        <td><%= link_to ticket_detail.ticket_category_name, ticket_detail.ticket_category %></td>
+  	        <td data-order="<%= ticket_detail.ticket_priority_order %>"><%= link_to ticket_detail.ticket_priority_name, ticket_detail.ticket_priority %></td>
+  	        <td><%= link_to ticket_detail.ticket_status_name, ticket_detail.ticket_status %></td>
+            <td data-order="<%= @time_taken[ticket_detail.id] - ticket_detail.ticket_sla_breach %>">
+              <% if @time_taken[ticket_detail.id] > ticket_detail.ticket_sla_breach %>
+                <span class = "label label-danger">
+              <% elsif @time_taken[ticket_detail.id].between?(ticket_detail.ticket_sla_warn, ticket_detail.ticket_sla_breach) %>
+                <span class = "label label-warning">
+              <% else %>
+                <span class = "label label-success">
+              <% end %>
+
+                  <%= format_time(@time_taken[ticket_detail.id]) %>
+                </span>
+            </td>
+  	        <td><%= link_to ticket_detail.created_by_name, ticket_detail.created_by %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

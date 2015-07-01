@@ -117,6 +117,14 @@ In order to build the ancestry, the root must have a null parent_id
 -bundle exec rails console
 -then do Location.build_ancestry_from_parent_ids!
 
+Ancestry for Categories
+---------------------
+
+Build ancestry for ticket_categories as above.
+In order for the controller to work & create/update ancestry just make sure you whitelist :parent_id
+To display Ticket category drop down to have tree structure see the following:
+http://stackoverflow.com/questions/7674754/how-to-arrange-entries-from-ancestry-tree-in-dropdown-list-in-rails-3
+Create a nested_dropdown helper, then pass @categories.arrange to it.
 Dimensions for models
 -----------------
 -specify class name
@@ -406,6 +414,11 @@ SQL for Location's table
 	Join [CN_MAIN].[dbo].[Operation_Manager_CurrentList] m
 	ON l.LocationCode = m.LocationCode
 	ORDER BY LocationID
+
+SQL to default status history time
+
+ALTER TABLE `helpdesk_development`.`ticket_status_histories` 
+CHANGE COLUMN `from` `from` DATETIME NULL DEFAULT NULL ;
 
 
 TO DO

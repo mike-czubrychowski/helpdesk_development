@@ -1,0 +1,38 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @ticket_sla.name %>
+</p>
+
+<p>
+  <strong>Order:</strong>
+  <%= @ticket_sla.order %>
+</p>
+
+<p>
+  <strong>Ticket category:</strong>
+  <%= @ticket_sla.ticket_category %>
+</p>
+
+<p>
+  <strong>Ticket priority:</strong>
+  <%= @ticket_sla.ticket_priority %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @ticket_sla.time %>
+</p>
+
+<%= link_to ticket_slas_path do %><i class ="fa fa-arrow-left"></i><% end -%> |
+<% if can? :edit, @ticket_sla %>
+    <%= link_to edit_ticket_sla_path(@ticket_sla), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+      <i class ="fa fa-edit"></i>
+    <% end -%>
+<% end %>
+<% if can? :destroy, @ticket_sla %>
+    <%= link_to ticket_sla_path(@ticket_sla), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-primary btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
+      <i class ="fa fa-times"></i>
+    <% end -%>
+<% end %>

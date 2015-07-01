@@ -1,0 +1,21 @@
+
+<p id="notice"><%= notice %></p>
+
+
+<h1><%= @ticket_category.name %> Tickets</h1>
+
+
+<div class = "row">
+    <div class = "col-md-12">
+      <% if !@ticket_details.nil? %>
+        <%= render :partial => 'ticket_details/indexlist' %>
+      <% else %>
+        <p>No Open Tickets</p>
+      <% end %>
+      <%= link_to 'New Ticket', new_ticket_detail_path(:ticket_category_id => @ticket_category.id) %>
+      
+    </div>
+
+ </div>
+
+<%= render 'layouts/links', locals: {item: @ticket_category} %>

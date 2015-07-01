@@ -4,7 +4,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include Pundit
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  after_filter :verify_authorized
+
+  before_filter :set_lookups, only: [:edit, :update, :new]
+  after_filter :verify_authorized, unless: :devise_controller?
   #after_filter :verify_policy_scoped, only: :index
 
 
@@ -16,12 +18,16 @@ class ApplicationController < ActionController::Base
    # Ability.new(current_user, controller_namespace)
   #end
 
-  @locations = Location.all
-  @ticket_status_histories = Ticket::StatusHistory.inclusive
+  #@locations = Location.all
+  #@ticket_status_histories = TicketStatusHistory.inclusive
+  private
+    def set_lookups
+      @ticket_categories = policy_scope(TicketCategory)
+    end
 
-  def user_not_authorized
-    flash[:alert] = "You are not authorized to perform this action."
-    redirect_to(request.referrer || root_path)
-  end
-  
+    def user_not_authorized
+      flash[:alert] = "You are not authorized to perform this action."
+      redirect_to(request.referrer || root_path)
+    end
+    
 end

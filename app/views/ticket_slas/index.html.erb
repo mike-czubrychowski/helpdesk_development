@@ -1,0 +1,66 @@
+<div class="row">
+	<div class = "col-md-8 col-xs-12">
+		<h1>ticket_slas</h1>
+	</div>
+	<div class = "col-md-4 col-xs-12">
+		<h2>
+			<% if can? :create, @ticket_slas %>
+		        <%= link_to new_ticket_sla_path, :class => 'btn btn-primary', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+		            <i class ="fa fa-plus"></i>
+		        <% end -%>
+		    <% end %>
+		</h2>
+	</div>
+</div>
+
+<div class="row">
+	<table class="table table-striped table-responsive" id ="ticket_slas" >
+	  <thead>
+	    <tr>
+		    	<th>Name</th>
+		    	<th>Order</th>
+		    	<th>Ticket category</th>
+		    	<th>Ticket priority</th>
+		    	<th>Time</th>
+		      	<th></th>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+	    <% @ticket_slas.each do |ticket_sla| %>
+	      <tr>
+		        <td><%= ticket_sla.name %></td>
+		        <td><%= ticket_sla.order %></td>
+		        <td><%= ticket_sla.ticket_category %></td>
+		        <td><%= ticket_sla.ticket_priority %></td>
+		        <td><%= ticket_sla.time %></td>
+	
+	        <td>
+	        	<% if can? :read, @ticket_sla %>
+		            <%= link_to ticket_sla_path(@ticket_sla), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+		              <i class ="fa fa-eye"></i>
+		            <% end -%>
+		        <% end %>
+		        <% if can? :edit, @ticket_sla %>
+		            <%= link_to edit_ticket_sla_path(@ticket_sla), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+		              <i class ="fa fa-edit"></i>
+		            <% end -%>
+		        <% end %>
+		        <% if can? :destroy, @ticket_sla %>
+				    <%= link_to ticket_sla_path(@ticket_sla), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-primary btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
+				      <i class ="fa fa-times"></i>
+				    <% end -%>
+				<% end %>
+	        
+
+	        </td>
+	        
+	      </tr>
+	    <% end %>
+	  </tbody>
+	</table>
+</div>
+<br>
+<br>
+
+<%= link_to 'New Ticket sla', new_ticket_sla_path %>

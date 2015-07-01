@@ -23,6 +23,7 @@ module HelpdeskDevelopment
     #to assist loading STI locations in subfolders
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**/}')]
     config.autoload_paths += Dir[Rails.root.join('app', 'policies', '{**/}')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'controllers', '{**/}')] 
 
     config.generators do |g|
       g.test_framework :rspec,

@@ -1,0 +1,30 @@
+<% if !@ticket_categories.nil? %>
+	<table class="table table-striped table-responsive" id ="ticket_categories" >
+	  <thead>
+	    <tr>
+	    	<th>ID</th?
+	    	<th>Name</th>
+		    <th></th>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+	    <% @ticket_categories.each do |ticket_category| %>
+	      <tr>
+	      	<td><%= ticket_category.id %></td>
+	      	<td><%= link_to ticket_category.name, edit_ticket_category_path(ticket_category) %></td>
+	        <td>
+
+				    <%= link_to ticket_category_path(ticket_category), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-primary btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
+				      <i class ="fa fa-times"></i>
+				    <% end -%>
+				
+	        
+
+	        </td>
+	        
+	      </tr>
+	    <% end %>
+	  </tbody>
+	</table>
+<% end %>

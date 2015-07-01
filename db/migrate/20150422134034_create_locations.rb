@@ -6,7 +6,7 @@ class CreateLocations < ActiveRecord::Migration
       t.string :category,  null: false
       t.integer :category_id, null: false
       t.references :manager, index: true, unique: true
-      
+      t.string :ancestry, index: true
 
       t.timestamps
     end

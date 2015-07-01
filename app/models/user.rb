@@ -5,10 +5,10 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :lockable
 
   has_one :assignment
-  has_many :ticket_user_assignments, class_name: "Ticket:UserAssignment", inverse_of: :user
+  has_many :ticket_user_assignments, class_name: "TicketUserAssignment", inverse_of: :user
   
-  has_many :ticket_details, class_name: "Ticket::Detail", inverse_of: :created_by, foreign_key: "created_by_id"
-  has_many :comments, class_name: "Ticket::Comment", inverse_of: :created_by
+  has_many :ticket_details, class_name: "TicketDetail", inverse_of: :created_by, foreign_key: "created_by_id"
+  has_many :ticket_comments, class_name: "TicketComment", inverse_of: :created_by, foreign_key: "created_by_id"
   
   has_one :role, :through => :assignment #this could be has_one
   has_one :store_detail, :through => :person 
@@ -17,10 +17,11 @@ class User < ActiveRecord::Base
   belongs_to :location, inverse_of: :users
 
 
-  scope :inclusive, -> {includes(:person).includes(:store_detail).includes(:tickets)}
+  scope :inclusive, -> {includes(:person).includes(:store_detail).includes(:location).includes(:ticket_details).includes(:ticket_comments).includes(:role).includes(:organisation).includes(:ticket_user_assignments)}
 
   delegate :name, :to => :person, :allow_nil => true
-  delegate :name, :to => :role, :allow_nil => true
+  delegate :name, :to => :role, :allow_nil => true, :prefix => true
+  delegate :name, :to => :location, :allow_nil => true, :prefix => true
   
   def has_role?(role_sym)
     #not working
@@ -37,5 +38,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def default_category
+    begin
+      self.organisation.ticket_category
+    rescue 
+      nil
+    end
+  end
   
 end

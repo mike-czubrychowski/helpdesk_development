@@ -35,9 +35,9 @@
 
 <div class = "col-md-12">
 
-  <%= render :partial => 'ticket/details/indexlist' %>
+  <%= render :partial => 'ticket_details/indexlist' %>
  
-  <%= link_to 'New Ticket', new_ticket_detail_path(:location_id => @location.id) %>
+  <%= link_to 'New Ticket', new_ticket_detail_path(:location_id => @location.id, :ticket_category_id => current_user.default_category.id) %>
   
 </div>
 

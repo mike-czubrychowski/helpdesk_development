@@ -1,6 +1,6 @@
 class Person < ActiveRecord::Base
   
-  belongs_to :store_detail, inverse_of: :employees, class_name: "Store::Detail"
+  belongs_to :store_detail, inverse_of: :employees, class_name: "StoreDetail"
 
   has_one :user,            inverse_of: :person
   delegate :name, :to => :store_detail, :allow_nil => true, :prefix => "store"
@@ -73,7 +73,7 @@ class Person < ActiveRecord::Base
 
   def sublocations
     begin
-      Store::Detail.where("location_id IN (?)", self.location.subtree_ids)
+      StoreDetail.where("location_id IN (?)", self.location.subtree_ids)
     rescue 
       nil
     end

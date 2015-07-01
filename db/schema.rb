@@ -11,33 +11,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150422161826) do
+ActiveRecord::Schema.define(version: 20150701122223) do
 
   create_table "assignments", force: true do |t|
-    t.integer  "roles_id"
-    t.integer  "users_id"
+    t.integer  "role_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "assignments", ["roles_id"], name: "index_assignments_on_roles_id", using: :btree
-  add_index "assignments", ["users_id"], name: "index_assignments_on_users_id", using: :btree
+  add_index "assignments", ["role_id"], name: "index_assignments_on_roles_id", using: :btree
+  add_index "assignments", ["user_id"], name: "index_assignments_on_users_id", using: :btree
 
   create_table "locations", force: true do |t|
     t.string   "name"
-    t.integer  "parent_id",  null: false
-    t.integer  "category",   null: false
+    t.integer  "parent_id"
+    t.string   "category",    limit: 50, null: false
     t.integer  "manager_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "category_id",            null: false
+    t.string   "ancestry"
   end
 
+  add_index "locations", ["ancestry"], name: "locations_ancestry", using: :btree
   add_index "locations", ["manager_id"], name: "locations_manager_id_fk", using: :btree
 
   create_table "organisations", force: true do |t|
-    t.string   "name",       null: false
+    t.string   "name",                             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "ticket_category_id"
+    t.integer  "location_id",        default: 654, null: false
   end
 
   create_table "people", force: true do |t|
@@ -90,7 +95,7 @@ ActiveRecord::Schema.define(version: 20150422161826) do
   create_table "store_tills", force: true do |t|
     t.string   "name"
     t.integer  "location_id"
-    t.integer  "model"
+    t.integer  "modelname"
     t.string   "ip"
     t.integer  "comms_support"
     t.integer  "mid"
@@ -107,13 +112,14 @@ ActiveRecord::Schema.define(version: 20150422161826) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ancestry"
   end
 
   create_table "ticket_comments", force: true do |t|
     t.integer  "ticket_detail_id"
     t.string   "name"
     t.text     "description"
-    t.integer  "type"
+    t.integer  "comment_type"
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.datetime "created_at"
@@ -125,19 +131,20 @@ ActiveRecord::Schema.define(version: 20150422161826) do
   add_index "ticket_comments", ["updated_by_id"], name: "index_ticket_comments_on_updated_by_id", using: :btree
 
   create_table "ticket_details", force: true do |t|
-    t.integer  "location_id",           null: false
+    t.integer  "location_id",                       null: false
     t.integer  "parent_id"
-    t.integer  "type",                  null: false
+    t.integer  "ticket_type_id",        default: 0, null: false
     t.integer  "ticket_category_id"
     t.integer  "ticket_subcategory_id"
-    t.integer  "ticket_priority",       null: false
+    t.integer  "ticket_priority_id",    default: 1, null: false
     t.integer  "ticket_status_id"
     t.integer  "ticket_comment_id"
-    t.string   "name",                  null: false
+    t.string   "name",                              null: false
     t.text     "description"
-    t.integer  "created_by_id",         null: false
+    t.integer  "created_by_id",                     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "ticket_sla_id",         default: 1, null: false
   end
 
   add_index "ticket_details", ["created_by_id"], name: "index_ticket_details_on_created_by_id", using: :btree
@@ -148,17 +155,48 @@ ActiveRecord::Schema.define(version: 20150422161826) do
   add_index "ticket_details", ["ticket_status_id"], name: "index_ticket_details_on_ticket_status_id", using: :btree
   add_index "ticket_details", ["ticket_subcategory_id"], name: "index_ticket_details_on_ticket_subcategory_id", using: :btree
 
+  create_table "ticket_priorities", force: true do |t|
+    t.string   "name"
+    t.integer  "order"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ticket_slas", force: true do |t|
+    t.string   "name"
+    t.time     "float"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ticket_slas_assignment", force: true do |t|
+    t.string   "name"
+    t.integer  "order"
+    t.integer  "ticket_category_id"
+    t.integer  "ticket_priority_id"
+    t.integer  "ticket_type_id"
+    t.float    "time",               limit: 24
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "ticket_sla_id"
+  end
+
+  add_index "ticket_slas_assignment", ["ticket_category_id"], name: "index_ticket_slas_on_ticket_category_id", using: :btree
+  add_index "ticket_slas_assignment", ["ticket_priority_id"], name: "index_ticket_slas_on_ticket_priority_id", using: :btree
+  add_index "ticket_slas_assignment", ["ticket_type_id"], name: "index_ticket_slas_on_ticket_type_id", using: :btree
+
   create_table "ticket_statistics", id: false, force: true do |t|
     t.integer "location_id",                           null: false
-    t.integer "ticket_priority",                       null: false
+    t.string  "ticket_priority"
+    t.string  "ticket_type"
     t.integer "count(t.id)",     limit: 8, default: 0, null: false
   end
 
   create_table "ticket_status_histories", force: true do |t|
     t.integer  "ticket_detail_id"
     t.integer  "ticket_status_id"
-    t.date     "from"
-    t.date     "to"
+    t.datetime "from",             null: false
+    t.datetime "to"
     t.integer  "updated_by_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -185,15 +223,22 @@ ActiveRecord::Schema.define(version: 20150422161826) do
 
   add_index "ticket_subcategories", ["ticket_category_id"], name: "index_ticket_subcategories_on_ticket_category_id", using: :btree
 
-  create_table "ticket_users", force: true do |t|
+  create_table "ticket_types", force: true do |t|
+    t.string   "name"
+    t.integer  "order"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ticket_user_assignments", force: true do |t|
     t.integer  "ticket_detail_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "ticket_users", ["ticket_detail_id"], name: "index_ticket_users_on_ticket_detail_id", using: :btree
-  add_index "ticket_users", ["user_id"], name: "index_ticket_users_on_user_id", using: :btree
+  add_index "ticket_user_assignments", ["ticket_detail_id"], name: "index_ticket_users_on_ticket_detail_id", using: :btree
+  add_index "ticket_user_assignments", ["user_id"], name: "index_ticket_users_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -213,18 +258,18 @@ ActiveRecord::Schema.define(version: 20150422161826) do
     t.integer  "failed_attempts",        default: 0,  null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.integer  "people_id"
-    t.integer  "organisations_id"
+    t.integer  "person_id"
+    t.integer  "organisation_id",        default: 0,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "location_id",            default: 0,  null: false
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "reset_password_token_UNIQUE", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
-  add_foreign_key "locations", "users", name: "locations_manager_id_fk", column: "manager_id"
+  add_foreign_key "locations", "people", name: "locations_manager_id_fk", column: "manager_id"
 
   add_foreign_key "people", "store_details", name: "people_store_detail_id_fk"
 

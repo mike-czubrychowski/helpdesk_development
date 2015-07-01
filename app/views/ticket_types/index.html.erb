@@ -1,0 +1,60 @@
+<div class="row">
+	<div class = "col-md-8 col-xs-12">
+		<h1>ticket_types</h1>
+	</div>
+	<div class = "col-md-4 col-xs-12">
+		<h2>
+			<% if can? :create, @ticket_types %>
+		        <%= link_to new_ticket_type_path, :class => 'btn btn-primary', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+		            <i class ="fa fa-plus"></i>
+		        <% end -%>
+		    <% end %>
+		</h2>
+	</div>
+</div>
+
+<div class="row">
+	<table class="table table-striped table-responsive" id ="ticket_types" >
+	  <thead>
+	    <tr>
+		    	<th>Name</th>
+		    	<th>Order</th>
+		      	<th></th>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+	    <% @ticket_types.each do |ticket_type| %>
+	      <tr>
+		        <td><%= ticket_type.name %></td>
+		        <td><%= ticket_type.order %></td>
+	
+	        <td>
+	        	<% if can? :read, @ticket_type %>
+		            <%= link_to ticket_type_path(@ticket_type), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+		              <i class ="fa fa-eye"></i>
+		            <% end -%>
+		        <% end %>
+		        <% if can? :edit, @ticket_type %>
+		            <%= link_to edit_ticket_type_path(@ticket_type), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+		              <i class ="fa fa-edit"></i>
+		            <% end -%>
+		        <% end %>
+		        <% if can? :destroy, @ticket_type %>
+				    <%= link_to ticket_type_path(@ticket_type), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-primary btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
+				      <i class ="fa fa-times"></i>
+				    <% end -%>
+				<% end %>
+	        
+
+	        </td>
+	        
+	      </tr>
+	    <% end %>
+	  </tbody>
+	</table>
+</div>
+<br>
+<br>
+
+<%= link_to 'New Ticket type', new_ticket_type_path %>

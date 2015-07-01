@@ -2,9 +2,10 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.8'
-gem 'activerecord'
+gem 'activerecord', '4.1.8'
 gem 'foreigner'
 gem 'mysql2', "~> 0.3.11"
+#gem 'composite_primary_keys', "~> 7.0"
 gem 'ancestry'
 
 
@@ -28,6 +29,7 @@ gem 'bootstrap-sass'
 gem 'bootstrap-sass-extras'
 gem 'bootstrap_form'
 gem 'rails_layout' #generates bootstrap layouts for devise
+gem 'sprockets'
 
 
 gem 'coffee-rails', '~> 4.1.0'

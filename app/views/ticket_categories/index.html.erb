@@ -1,0 +1,20 @@
+<div class="row">
+	<div class = "col-md-12 col-xs-12">
+		<h1>Ticket Categoriess 
+			
+	        <%= link_to new_ticket_category_path, :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+	            <i class ="fa fa-plus"></i>
+	        <% end -%>
+	   
+		</h1>
+	</div>
+	
+</div>
+
+<div class="row">
+	<div class = "col-md-12">
+		<%= render :partial => 'indexlist' %>
+	</div>
+</div>
+
+

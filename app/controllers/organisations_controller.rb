@@ -6,6 +6,7 @@ class OrganisationsController < ApplicationController
   # GET /organisations
   def index
     @organisations = Organisation.all
+    authorize @organisations
   end
 
   # GET /organisations/1
@@ -15,6 +16,7 @@ class OrganisationsController < ApplicationController
   # GET /organisations/new
   def new
     @organisation = Organisation.new
+    authorize @organisation
   end
 
   # GET /organisations/1/edit
@@ -24,7 +26,7 @@ class OrganisationsController < ApplicationController
   # POST /organisations
   def create
     @organisation = Organisation.new(organisation_params)
-
+    authorize @organisation
     if @organisation.save
       redirect_to @organisation, notice: 'Organisation was successfully created.'
     else
@@ -51,6 +53,9 @@ class OrganisationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_organisation
       @organisation = Organisation.find(params[:id])
+      authorize @organisation
+      @ticket_details = policy_scope(@organisation.tickets) if @organisation.tickets
+      @users = policy_scope(@organisation.users) if @organisation.users
     end
 
     # Only allow a trusted parameter "white list" through.

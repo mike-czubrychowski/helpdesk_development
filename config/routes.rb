@@ -3,41 +3,45 @@ Rails.application.routes.draw do
   
 
   
+  resources :ticket_slas
+
+  resources :ticket_types
+
+  resources :ticket_priorities
+
   devise_for :users
   
-  namespace :store do
-    resources :details
-    resources :tills
-  end
-
+  resources :store_details
+  resources :store_tills
+  
 
   resources :locations
   
-    resources :worlds, controller: 'locations', type: 'World' 
-    resources :globalregions, controller: 'locations', type: 'Globalregion' 
-    resources :country, controller: 'locations', type: 'Country'
-    #add in this because routes is not properly pluralizing country
-    get :countries, controller: 'locations', action: 'index', type: 'Country'  
-    resources :divisions, controller: 'locations', type: 'Division' 
-    resources :regions, controller: 'locations', type: 'Region' 
-    resources :areas, controller: 'locations', type: 'Area' 
-    resources :sites, controller: 'locations', type: 'Site' 
-    resources :storelocations, controller: 'locations', type: 'Storelocation' 
+  resources :worlds, controller: 'locations', type: 'World' 
+  resources :globalregions, controller: 'locations', type: 'Globalregion' 
+  resources :country, controller: 'locations', type: 'Country'
+  #add in this because routes is not properly pluralizing country
+  get :countries, controller: 'locations', action: 'index', type: 'Country'  
+  resources :divisions, controller: 'locations', type: 'Division' 
+  resources :regions, controller: 'locations', type: 'Region' 
+  resources :areas, controller: 'locations', type: 'Area' 
+  resources :sites, controller: 'locations', type: 'Site' 
+  resources :storelocations, controller: 'locations', type: 'Storelocation' 
     
 
 
   
 
-  namespace :ticket do
-    resources :details
-    resources :comments
-    resources :user_assignments
-    resources :statuses
-    resources :status_histories
-    resources :categories
-    resources :subcategories
-    resources :statistics
-  end
+  resources :ticket_details
+  resources :ticket_comments
+  resources :ticket_user_assignments
+  resources :ticket_statuses
+  resources :ticket_status_histories
+  resources :ticket_categories
+  #get :ticket_categories, controller: 'ticket_categories', action: 'index'
+  resources :ticket_subcategories
+  resources :ticket_statistics
+
 
   
   resources :organisations

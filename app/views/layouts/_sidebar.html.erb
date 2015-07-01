@@ -6,8 +6,8 @@
         
             <p class="centered"><%= image_tag "ui-sam.jpg", :class => "img-circle", :width => "60" %></p>
             <h5 class="centered"><%= current_user.name %></h5>
-            <h6  class="centered"><%= current_user.role %></h6>
-            <h6  class="centered"><%= current_user.location.name %></h6>
+            <h6  class="centered"><%= current_user.role_name %></h6>
+            <h6  class="centered"><%= current_user.location_name %></h6>
               
             <li class="mt">
                 <%= link_to root_path do %>
@@ -18,6 +18,21 @@
 
             <li class="sub-menu">
                 <a href="javascript:;" >
+                    <i class="fa fa-ticket"></i>
+                    <span>Tickets</span>
+                </a>
+                <ul class="sub">
+
+                    <% @ticket_categories = policy_scope(TicketCategory.where("ticket_categories.id IN (?)", current_user.organisation.ticket_category.subtree_ids)) %>
+                    <% nested_dropdown(@ticket_categories.arrange).each do |ticket_category| %>
+                        <li><%= link_to ticket_category[0], ticket_category_path(ticket_category[1]) %></li>
+                    <% end %>
+                </ul>
+            </li>
+
+
+            <li class="sub-menu">
+                <a href="javascript:;" >
                     <i class="fa fa-building"></i>
                     <span>Locations</span>
                 </a>
@@ -25,11 +40,22 @@
                     <% Location.categories.each do |category| %>
                     <!-- scope categories here -->
                         <li><%= link_to category.capitalize, [category.downcase.pluralize] %></li><% end %>
-                    
-                    <li><a  href="">Regions</a></li>
-                    <li><a  href="">Divisionss</a></li>
                 </ul>
             </li>
+
+            
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-ticket"></i>
+                    <span>Statuses</span>
+                </a>
+                <ul class="sub">
+                    <% TicketStatus.all.each do |ticket_status| %>
+                        <li><%= link_to ticket_status.name.capitalize, ticket_status %></li>
+                    <% end %>
+                </ul>
+            </li>
+
 
             <li class="sub-menu">
                 <a href="javascript:;" >

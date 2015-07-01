@@ -45,9 +45,10 @@ module ApplicationHelper
 						return link_to link_text, [:edit, obj], :class => htmlclass 
 					end
 				when :destroy
+				
 					if Pundit.policy(current_user, pundit_obj).destroy? then 
 						
-						return link_to link_text, [:delete, obj], :class => htmlclass, :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } 
+						return link_to link_text, obj, :class => htmlclass, :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } 
 					end
 			end
 
@@ -81,6 +82,28 @@ module ApplicationHelper
 
 		link_to obj.category_id, obj.category.downcase.pluralize
 		
+	end
+
+	def nested_dropdown(items, spacer = '- ')
+
+
+	    result = []
+	    items.map do |item, sub_items|
+	        result << [(spacer * (item.depth - 1)) + item.name, item.id] # need to set here the -1 to be the depth of the root item
+	        result += nested_dropdown(sub_items) unless sub_items.blank?
+	    end
+	    result
+	end
+
+	def format_time(time)
+	    begin
+	      hours = (time * 24).to_i
+	      minutes = Time.at(time * (60 * 60 * 24)).utc.strftime("%M:%S")
+	      hours.to_s + ":" + minutes.to_s
+	    rescue
+	      '00:00:00'
+	    end
+
 	end
 
 	

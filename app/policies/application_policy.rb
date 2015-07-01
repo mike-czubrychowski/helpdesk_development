@@ -1,8 +1,5 @@
 class ApplicationPolicy
 
-  #This is required because the line in config.rb to autoload policy scripts doesn't fully work for some reason
-  extend ActiveSupport::Autoload
-  autoload :Tickets
   
   attr_reader :current_user, :record
 
