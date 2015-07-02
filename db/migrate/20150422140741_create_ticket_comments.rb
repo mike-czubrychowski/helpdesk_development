@@ -5,9 +5,7 @@ class CreateTicketComments < ActiveRecord::Migration
       t.foreign_key :ticket_details
       t.string :name
       t.text :description
-      t.integer :comment_type
       t.references :created_by, index: true
-     
       t.references :updated_by, index: true
       
       t.timestamps

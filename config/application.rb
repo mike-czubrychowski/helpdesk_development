@@ -25,6 +25,12 @@ module HelpdeskDevelopment
     config.autoload_paths += Dir[Rails.root.join('app', 'policies', '{**/}')]
     config.autoload_paths += Dir[Rails.root.join('app', 'controllers', '{**/}')] 
 
+    #config.assets.enabled = true
+    config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
+    config.assets.version = '1.0'
+    config.encoding = "utf-8"
+    config.filter_parameters += [:password]
+
     config.generators do |g|
       g.test_framework :rspec,
         fixtures:         true,

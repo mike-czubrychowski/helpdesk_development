@@ -30,6 +30,8 @@ class TicketDetailPolicy < ApplicationPolicy
     false 
   end
 
+  def new?; true; end 
+    
   def create? 
     self.show? 
   end
@@ -74,7 +76,7 @@ class TicketDetailPolicy < ApplicationPolicy
     end
 
     def resolve
-
+      p 'Scoping ticket_details'
 
     case @current_user.role.name.to_sym
       
@@ -83,12 +85,12 @@ class TicketDetailPolicy < ApplicationPolicy
         scope
       when :admin, :operations
         #In your country
-        scope.where("ticket_details.location_id IN (?) ", @current_user.location.subtree_ids)
+        scope.inclusive.where("ticket_details.location_id IN (?) ", @current_user.location.subtree_ids)
       when :helpdesk
         #That are in your location and category
-        scope.where("ticket_details.location_id IN (?) and ticket_details.ticket_category_id IN (?)", @current_user.location.subtree_ids, @current_user.organisation.ticket_category.subtree_ids)
+        scope.inclusive.where("ticket_details.location_id IN (?) and ticket_details.ticket_category_id IN (?)", @current_user.location.subtree_ids, @current_user.organisation.ticket_category.subtree_ids)
       when :thirdparty
-        scope.where("ticket_details.ticket_category_id IN (?)", @current_user.organisation.ticket_category.subtree_ids.include?)
+        scope.inclusive.where("ticket_details.ticket_category_id IN (?)", @current_user.organisation.ticket_category.subtree_ids)
     end
         
     end

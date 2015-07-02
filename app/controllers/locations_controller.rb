@@ -1,13 +1,11 @@
 class LocationsController < ApplicationController
   
-  #load_and_authorize_resource
-
   before_filter :authenticate_user!
   after_action :verify_authorized
 
-  before_action :set_location_category
   before_action :set_location, only: [:show, :edit, :update, :destroy]
- 
+  before_action :set_location_category #STI
+  
   # GET /locations
   def index
     #Required for STI

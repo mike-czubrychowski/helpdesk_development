@@ -4,4 +4,5 @@ class Assignment < ActiveRecord::Base
 	
 	
 	validates :user_id, :presence => true, :uniqueness => true 
+	validates_presence_of :role_id
 end

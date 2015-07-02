@@ -1,6 +1,8 @@
 class PeopleController < ApplicationController
 
-  #load_and_authorize_resource 
+  before_filter :authenticate_user!
+  after_action :verify_authorized
+
   before_action :set_person, only: [:show, :edit, :update, :destroy]
 
   # GET /people
@@ -52,9 +54,9 @@ class PeopleController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_person
-      @person = Person.find(params[:id])
+      @person = Person.inclusive.find(params[:id])
       authorize @person
-      @ticket_details = policy_scope(@person.tickets) if @person.tickets
+      @ticket_details = policy_scope(@person.ticket_details) if @person.tickets_details
       @people = policy_scope(@person.employees) if @person.employees
     end
 

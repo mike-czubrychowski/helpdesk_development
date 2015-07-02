@@ -19,24 +19,19 @@
         <tr>
   	        <td><%= link_to ticket_detail.location_name, ticket_detail.location %></td>
   	        <td><%= link_to ticket_detail.name, [:edit, ticket_detail] %>
-  	        <td><%= link_to ticket_detail.parent_name, ticket_detail.parent %></td>
+  	        <td><%= link_to ticket_detail.parent_name, ticket_detail.parent if ticket_detail.parent %></td>
   	        <td data-order="<%= ticket_detail.ticket_type_order %>"><%= link_to ticket_detail.ticket_type_name, ticket_detail.ticket_type %></td>
   	        <td><%= link_to ticket_detail.ticket_category_name, ticket_detail.ticket_category %></td>
   	        <td data-order="<%= ticket_detail.ticket_priority_order %>"><%= link_to ticket_detail.ticket_priority_name, ticket_detail.ticket_priority %></td>
   	        <td><%= link_to ticket_detail.ticket_status_name, ticket_detail.ticket_status %></td>
-            <td data-order="<%= @time_taken[ticket_detail.id] - ticket_detail.ticket_sla_breach %>">
-              <% if @time_taken[ticket_detail.id] > ticket_detail.ticket_sla_breach %>
-                <span class = "label label-danger">
-              <% elsif @time_taken[ticket_detail.id].between?(ticket_detail.ticket_sla_warn, ticket_detail.ticket_sla_breach) %>
-                <span class = "label label-warning">
-              <% else %>
-                <span class = "label label-success">
-              <% end %>
-
+            
+            <td data-order="<%= time_to_breach(@time_taken[ticket_detail.id], ticket_detail.ticket_sla_breach) %>">
+              
+                <span class = "label <%= breach_label(@time_taken[ticket_detail.id], ticket_detail.ticket_sla_breach, ticket_detail.ticket_sla_warn) %>">
                   <%= format_time(@time_taken[ticket_detail.id]) %>
                 </span>
             </td>
-  	        <td><%= link_to ticket_detail.created_by_name, ticket_detail.created_by %></td>
+  	        <td><%= link_to ticket_detail.person_name, ticket_detail.person %></td>
         </tr>
       <% end %>
     </tbody>

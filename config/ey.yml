@@ -1,0 +1,4 @@
+
+defaults:
+  precompile_assets: true
+  ignore_gemfile_lock_warning: true

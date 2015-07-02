@@ -19,7 +19,7 @@ class TicketCategoryPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where("ticket_categories.id IN (?) OR  ticket_categories.id IN (?)", @current_user.organisation.ticket_category.subtree_ids, @current_user.organisation.ticket_category.sibling_ids)
+      scope.inclusive.where("ticket_categories.id IN (?) OR  ticket_categories.id IN (?)", @current_user.organisation.ticket_category.subtree_ids, @current_user.organisation.ticket_category.sibling_ids)
     end
   end
 end

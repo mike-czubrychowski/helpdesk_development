@@ -19,45 +19,52 @@
       <%= f.collection_select :ticket_type_id, @types, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %>
       <%= f.select :ticket_category_id, nested_dropdown(@categories) %>
       <%= f.collection_select :ticket_priority_id, @priorities, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %>
-      <%= f.collection_select :ticket_status_id, @statuses, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %> 
-      <%= f.text_field :ticket_sla_name, readonly: :true  %>
+      
 
-      <br /><br /><br /><br />
-      <%=  f.submit 'Update', wrapper: { class: 'btn btn-primary'} %>
+      <% if !@ticket_detail.id.nil? %>
+        <%= f.collection_select :ticket_status_id, @statuses, :id, :name,  {:include_blank => "Please select...", :class => 'text_field form-control'} %> 
+        <%= f.text_field :ticket_sla_name, readonly: :true  %>
+
+        <br /><br /><br /><br />
+        <%=  f.submit 'Update', wrapper: { class: 'btn btn-primary'} %>
+      <% end %>
     </div>
+
     <div class="col-md-4">
       <br />
-
-
-      <%= render 'ticket_status_histories/indexlist' %>
-      
+      <%= render 'ticket_status_histories/indexlist' %>  
     </div>
+
     <div class="col-md-4">
       <%= render 'ticket_user_assignments/indexlist' %>
       <div>
         <%= link_to_add_association 'Add User', f, :ticket_user_assignments, :class => "btn btn-primary" %>
       </div>
     </div>
+
+
     <div class="col-md-12">
       <%= f.text_field :name %>
       <%= f.text_area :description %>
     </div>
+
   </div>
+
   <div class="row">
     <div class="col-md-12">
       <% if !@ticket_comments.nil? %>
         <h1>Comments</h1>
-
         <%= render 'ticket_comments/indexlist' %>
-
-        
       <% end %>
 
 
       <div>
+      <% if !@ticket_detail.id.nil? %>
         <%= link_to_add_association 'Add Comment', f, :ticket_comments, :class => "btn btn-primary" %>
+      <% end %>
       </div>
     </div>
+
     <div class="col-md-12">
       <br /><br />
       <%=  f.submit 'Update', wrapper: { class: 'btn btn-primary'} %> <!--Duplicate Submit button for whole form-->

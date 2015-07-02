@@ -5,6 +5,10 @@ class Storelocation < Location
   #delegate :id, :to => :store_detail, :allow_nil => true, :prefix => "store"
 
   scope :inclusive, -> { includes(:manager).includes(:store_detail).includes(:store_tills)}
+
+
+ 
+
  
   def store_id
     begin

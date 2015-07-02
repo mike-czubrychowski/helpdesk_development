@@ -18,8 +18,32 @@
 
             <li class="sub-menu">
                 <a href="javascript:;" >
+                    <i class="fa fa-exclamation-circle"></i>
+                    <span>Priority</span>
+                </a>
+                <ul class="sub">
+                    <% TicketPriority.all.each do |ticket_priority| %>
+                        <li><%= link_to ticket_priority.name.capitalize, ticket_priority %></li>
+                    <% end %>
+                </ul>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;" >
+                    <i class="fa fa-star"></i>
+                    <span>Status</span>
+                </a>
+                <ul class="sub">
+                    <% TicketStatus.all.each do |ticket_status| %>
+                        <li><%= link_to ticket_status.name.capitalize, ticket_status %></li>
+                    <% end %>
+                </ul>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;" >
                     <i class="fa fa-ticket"></i>
-                    <span>Tickets</span>
+                    <span>Categories</span>
                 </a>
                 <ul class="sub">
 
@@ -34,7 +58,7 @@
             <li class="sub-menu">
                 <a href="javascript:;" >
                     <i class="fa fa-building"></i>
-                    <span>Locations</span>
+                    <span>Location</span>
                 </a>
                 <ul class="sub">
                     <% Location.categories.each do |category| %>
@@ -44,17 +68,7 @@
             </li>
 
             
-            <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class="fa fa-ticket"></i>
-                    <span>Statuses</span>
-                </a>
-                <ul class="sub">
-                    <% TicketStatus.all.each do |ticket_status| %>
-                        <li><%= link_to ticket_status.name.capitalize, ticket_status %></li>
-                    <% end %>
-                </ul>
-            </li>
+            
 
 
             <li class="sub-menu">
@@ -63,21 +77,14 @@
                     <span>Admin</span>
                 </a>
                 <ul class="sub">
-                    <li><a href="">Ticket Categories</a></li>
-                    <li><a href="">Ticket Sub-Categories</a></li>
-                    <li><a href="">Ticket Statuses</a></li>
-                </ul>
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class="fa fa-user"></i>
-                    <span>People</span>
-                </a>
-                <ul class="sub">
-                    <li><%= link_to 'People', people_path %></li>
+                    <li><%= link_to 'Ticket Categories', ticket_categories_path %></li>
+                    <li><%= link_to 'Ticket Statuses', ticket_statuses_path %></li>
+                    <li><%= link_to 'Ticket Priorities', ticket_priorities_path %></li>
                     <li><%= link_to 'Organisations', organisations_path %></li>
+                    <li><%= link_to 'People', people_path %></li>
                 </ul>
             </li>
+        
         </ul>
         <!-- sidebar menu end-->
     </div>

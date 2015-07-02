@@ -106,6 +106,32 @@ module ApplicationHelper
 
 	end
 
+
+	def time_to_breach(time_taken =0, ticket_sla_breach = 0, ticket_sla_warn =0)
+	    begin
+	   		time_taken - ticket_sla_breach 
+	    rescue
+	      0
+	    end
+   
+  	end
+
+  	def breach_label(time_taken =0, ticket_sla_breach = 0, ticket_sla_warn =0)
+  		begin
+  			if time_taken > ticket_sla_breach then
+		        "label-danger"
+		    elsif time_taken.between?(ticket_sla_warn, ticket_sla_breach)
+		        "label-warning"
+		    else
+		        "label-success"
+		    end 
+  		rescue 
+  			"label-success"
+  		end
+  	end
+  		
+
+
 	
 	
 

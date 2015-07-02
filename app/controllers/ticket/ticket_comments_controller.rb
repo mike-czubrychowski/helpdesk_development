@@ -1,6 +1,8 @@
 class TicketCommentsController < ApplicationController
 
-  #load_and_authorize_resource 
+  before_filter :authenticate_user!
+  after_action :verify_authorized
+  
   before_action :set_ticket_comment, only: [:show, :edit, :update, :destroy]
   before_filter :set_lookups, only: [:edit, :update, :new]
 
@@ -26,7 +28,7 @@ class TicketCommentsController < ApplicationController
 
   # POST /ticket/comments
   def create
-    @ticket_comment = TicketComment.new(ticket_comment_params)
+    @ticket_comment = TicketComment.new(ticket_comment_params.merge(created_by_id: current_user.id))
     authorize @ticket_comment
     if @ticket_comment.save
       redirect_to @ticket_comment, notice: 'Comment was successfully created.'
@@ -37,7 +39,7 @@ class TicketCommentsController < ApplicationController
 
   # PATCH/PUT /ticket/comments/1
   def update
-    if @ticket_comment.update(ticket_comment_params)
+    if @ticket_comment.update(ticket_comment_params.merge(updated_by_id: current_user.id))
       redirect_to @ticket_comment, notice: 'Comment was successfully updated.'
     else
       render :edit

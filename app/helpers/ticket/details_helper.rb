@@ -1,2 +1,6 @@
 module Ticket::DetailsHelper
+
+
+	
+	
 end

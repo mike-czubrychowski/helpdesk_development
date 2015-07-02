@@ -12,12 +12,16 @@ class User < ActiveRecord::Base
   
   has_one :role, :through => :assignment #this could be has_one
   has_one :store_detail, :through => :person 
+  
   belongs_to :person, inverse_of: :user
   belongs_to :organisation, inverse_of: :users
   belongs_to :location, inverse_of: :users
 
 
   scope :inclusive, -> {includes(:person).includes(:store_detail).includes(:location).includes(:ticket_details).includes(:ticket_comments).includes(:role).includes(:organisation).includes(:ticket_user_assignments)}
+
+  has_paper_trail
+  paginates_per 50
 
   delegate :name, :to => :person, :allow_nil => true
   delegate :name, :to => :role, :allow_nil => true, :prefix => true
@@ -28,7 +32,6 @@ class User < ActiveRecord::Base
 	 roles.any? { |r| r.name.underscore.to_sym == role_sym }
   end
 
-  
   
   def tickets
     begin

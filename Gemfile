@@ -17,9 +17,7 @@ gem 'paper_trail', '~> 3.0.6'
 
 
 gem 'uglifier', '>= 1.3.0'
-
 gem 'turbolinks'
-
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 
@@ -58,7 +56,8 @@ group :development, :test do
   	gem 'faker'
   	gem 'guard-rspec'
   	gem 'better_errors', '~> 1.0.0'
-  	gem "binding_of_caller"
+  	gem 'binding_of_caller'
+
 
 	# Access an IRB console on exception pages or by using <%= console %> in views
 	gem 'web-console', '~> 2.0'

@@ -1,8 +1,11 @@
 class TicketPrioritiesController < ApplicationController
+  
+  before_filter :authenticate_user!
+  after_action :verify_authorized
   before_action :set_ticket_priority, only: [:show, :edit, :update, :destroy]
-  before_action :calculate_time_taken, only: [:index, :show, :edit]
+ 
 
-  respond_to :html
+  before_action :calculate_time_taken, only: [:index, :show, :edit]
 
   def index
     @ticket_priorities = TicketPriority.inclusive
@@ -10,7 +13,6 @@ class TicketPrioritiesController < ApplicationController
   end
 
   def show
-    
   end
 
   def new
@@ -43,7 +45,7 @@ class TicketPrioritiesController < ApplicationController
     def set_ticket_priority
       @ticket_priority = TicketPriority.inclusive.find(params[:id])
       authorize @ticket_priority
-      @ticket_details = @ticket_priority.tickets.inclusive if @ticket_priority.tickets
+      @ticket_details = policy_scope(@ticket_priority.tickets.inclusive) if @ticket_priority.tickets
     end
 
     def ticket_priority_params

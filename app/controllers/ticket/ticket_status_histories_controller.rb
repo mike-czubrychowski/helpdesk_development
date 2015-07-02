@@ -1,6 +1,7 @@
 class TicketStatusHistoriesController < ApplicationController
 
-  #load_and_authorize_resource 
+  before_filter :authenticate_user!
+  after_action :verify_authorized
   before_action :set_ticket_status_history, only: [:show, :edit, :update, :destroy]
 
   # GET /ticket/status_histories

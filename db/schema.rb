@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150701122223) do
+ActiveRecord::Schema.define(version: 20150702095228) do
 
   create_table "assignments", force: true do |t|
     t.integer  "role_id"
@@ -119,7 +119,6 @@ ActiveRecord::Schema.define(version: 20150701122223) do
     t.integer  "ticket_detail_id"
     t.string   "name"
     t.text     "description"
-    t.integer  "comment_type"
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.datetime "created_at"
@@ -162,28 +161,28 @@ ActiveRecord::Schema.define(version: 20150701122223) do
     t.datetime "updated_at"
   end
 
-  create_table "ticket_slas", force: true do |t|
-    t.string   "name"
-    t.time     "float"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "ticket_slas_assignment", force: true do |t|
+  create_table "ticket_sla_assignments", force: true do |t|
     t.string   "name"
     t.integer  "order"
     t.integer  "ticket_category_id"
     t.integer  "ticket_priority_id"
     t.integer  "ticket_type_id"
-    t.float    "time",               limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "ticket_sla_id"
   end
 
-  add_index "ticket_slas_assignment", ["ticket_category_id"], name: "index_ticket_slas_on_ticket_category_id", using: :btree
-  add_index "ticket_slas_assignment", ["ticket_priority_id"], name: "index_ticket_slas_on_ticket_priority_id", using: :btree
-  add_index "ticket_slas_assignment", ["ticket_type_id"], name: "index_ticket_slas_on_ticket_type_id", using: :btree
+  add_index "ticket_sla_assignments", ["ticket_category_id"], name: "index_ticket_slas_on_ticket_category_id", using: :btree
+  add_index "ticket_sla_assignments", ["ticket_priority_id"], name: "index_ticket_slas_on_ticket_priority_id", using: :btree
+  add_index "ticket_sla_assignments", ["ticket_type_id"], name: "index_ticket_slas_on_ticket_type_id", using: :btree
+
+  create_table "ticket_slas", force: true do |t|
+    t.string   "name"
+    t.float    "breach",     limit: 24, default: 1.0,     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "warn",       limit: 24, default: 0.66667, null: false
+  end
 
   create_table "ticket_statistics", id: false, force: true do |t|
     t.integer "location_id",                           null: false
@@ -213,15 +212,6 @@ ActiveRecord::Schema.define(version: 20150701122223) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "ticket_subcategories", force: true do |t|
-    t.integer  "ticket_category_id"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "ticket_subcategories", ["ticket_category_id"], name: "index_ticket_subcategories_on_ticket_category_id", using: :btree
 
   create_table "ticket_types", force: true do |t|
     t.string   "name"
@@ -268,6 +258,18 @@ ActiveRecord::Schema.define(version: 20150701122223) do
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "reset_password_token_UNIQUE", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
+
+  create_table "versions", force: true do |t|
+    t.string   "item_type",      null: false
+    t.integer  "item_id",        null: false
+    t.string   "event",          null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+    t.text     "object_changes"
+  end
+
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
   add_foreign_key "locations", "people", name: "locations_manager_id_fk", column: "manager_id"
 

@@ -1,13 +1,19 @@
 class TicketCategory < ActiveRecord::Base
 
-	has_many :ticket_details, class_name: "TicketDetail", inverse_of: :ticket_category
-	#has_many :ticket_subcategories, 	class_name: "TicketSubcategory",			inverse_of: :ticket_category
-  has_many :organisations, class_name: "Organisation", inverse_of: :ticket_category
+	has_many :ticket_details, inverse_of: :ticket_category
+  has_many :organisations,  inverse_of: :ticket_category
 
-  has_ancestry
-
+  
 
 	scope :inclusive, -> { includes(:ticket_details)}
+
+  has_ancestry
+  has_paper_trail
+  paginates_per 10
+
+  validates_length_of :name, maximum: 50
+  validates_presence_of :name
+
 
   def tickets
   	begin

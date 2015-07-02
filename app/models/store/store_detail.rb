@@ -10,6 +10,8 @@ class StoreDetail < ActiveRecord::Base
   
   delegate :name, :to => :location, :allow_nil => true, :prefix => true
   delegate :name, :to => :manager, :allow_nil => true, :prefix => "manager"
+
+  
   
 
   #### Won't work until managers are filled #### 
@@ -20,7 +22,8 @@ class StoreDetail < ActiveRecord::Base
   scope :inclusive, -> { includes(:location).includes(:manager).includes(:employees)} #.includes(:store_tills)
   scope :employees, -> { includes(:employees)}
 
-
+  has_paper_trail
+  paginates_per 50
   
   
   def manager_id

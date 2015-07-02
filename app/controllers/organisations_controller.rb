@@ -1,11 +1,13 @@
 class OrganisationsController < ApplicationController
 
-  #load_and_authorize_resource 
+  before_filter :authenticate_user!
+  after_action :verify_authorized
+
   before_action :set_organisation, only: [:show, :edit, :update, :destroy]
 
   # GET /organisations
   def index
-    @organisations = Organisation.all
+    @organisations = Organisation.inclusive
     authorize @organisations
   end
 
@@ -52,7 +54,7 @@ class OrganisationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_organisation
-      @organisation = Organisation.find(params[:id])
+      @organisation = Organisation.inclusive.find(params[:id])
       authorize @organisation
       @ticket_details = policy_scope(@organisation.tickets) if @organisation.tickets
       @users = policy_scope(@organisation.users) if @organisation.users

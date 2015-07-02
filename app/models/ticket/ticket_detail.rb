@@ -6,26 +6,24 @@ class TicketDetail < ActiveRecord::Base
   
 
   belongs_to :location,																  				inverse_of: :ticket_details
-  belongs_to :parent,   				class_name: "TicketDetail",                             	inverse_of: :children
-  has_many 	 :children,   			class_name: "TicketDetail",              foreign_key: "parent_id", 	inverse_of: :parent  
-  belongs_to :ticket_category, 				 class_name: "TicketCategory",     foreign_key: "ticket_category_id", 							  	inverse_of: :ticket_details	
-  belongs_to :ticket_status, 					 class_name: "TicketStatus",       foreign_key: "ticket_status_id", 								inverse_of: :ticket_details
-  belongs_to :ticket_type,         class_name: "TicketType",     foreign_key: "ticket_category_id",                   inverse_of: :ticket_details 
-  belongs_to :ticket_priority,           class_name: "TicketPriority",       foreign_key: "ticket_status_id",                 inverse_of: :ticket_details
-  has_many   :ticket_status_histories,   class_name: "TicketStatusHistory",                    inverse_of: :ticket_detail    
-  has_many   :ticket_comments, 				       class_name: "TicketComment",      foreign_key: "ticket_detail_id", 			inverse_of: :ticket_detail
-  belongs_to :created_by,				       class_name: "User",                 foreign_key: "created_by",  inverse_of: :ticket_details
-  has_many   :ticket_user_assignments, class_name: "TicketUserAssignment",   foreign_key: "ticket_detail_id",   inverse_of: :ticket_detail 
-  has_many	 :users, class_name: "User", 				:through => :ticket_user_assignments
+  belongs_to :parent,   				class_name: "TicketDetail",     inverse_of: :children
+  has_many 	 :children,   			class_name: "TicketDetail",     foreign_key: "parent_id", 	inverse_of: :parent  
+  belongs_to :ticket_category,  inverse_of: :ticket_details	
+  belongs_to :ticket_status,    inverse_of: :ticket_details
+  belongs_to :ticket_type,      inverse_of: :ticket_details 
+  belongs_to :ticket_priority,  inverse_of: :ticket_details
+  has_many   :ticket_status_histories,  inverse_of: :ticket_detail    
+  has_many   :ticket_comments,  inverse_of: :ticket_detail
+  belongs_to :created_by,				class_name: "User",  foreign_key: "created_by_id",  inverse_of: :ticket_details
+  has_one    :person,           :through => :created_by
+  has_many   :ticket_user_assignments,  inverse_of: :ticket_detail 
+  has_many	 :users, :through => :ticket_user_assignments
   
   belongs_to :ticket_sla
 
   accepts_nested_attributes_for :ticket_comments, allow_destroy: true
   accepts_nested_attributes_for :ticket_user_assignments, allow_destroy: true
-  accepts_nested_attributes_for :users, allow_destroy: false
-
-  #enum ticket_priority: {"low" => 0, "normal" => 1, "high" => 2, "critical" => 3}
-  #enum ticket_type: {"issue" => 0, "incident" => 1, "complaint" => 2, "bug" => 4, "knowledge" => 4}
+  #accepts_nested_attributes_for :users, allow_destroy: false ??? Really I don't think so
 
   delegate :name, :to => :ticket_category, :allow_nil => true, :prefix => true
   delegate :name, :to => :ticket_status, :allow_nil => true, :prefix => true
@@ -42,23 +40,48 @@ class TicketDetail < ActiveRecord::Base
 
   delegate :name, :to => :location, :allow_nil => true, :prefix => true
   delegate :name, :to => :parent, :allow_nil => true, :prefix => true
-  delegate :name, :to => :created_by, :allow_nil => true, :prefix => "created_by"
+  delegate :name, :to => :person, :allow_nil => true, :prefix => true
 
-  scope :inclusive, -> { includes(:ticket_category).includes(:ticket_status).includes(:ticket_sla).includes(:location).includes(:users).includes(:parent).includes(:created_by).includes(:ticket_priority).includes(:ticket_type)}
+  #Only these two models need validation, when subforms entered through cocoon
+  validates_associated  :ticket_comments
+  validates_associated  :ticket_user_assignments
+
+  validates_presence_of :name
+  validates_presence_of :description
+  validates_presence_of :location_id
+  validates_presence_of :ticket_category_id
+  validates_presence_of :ticket_status_id
+  validates_presence_of :ticket_priority_id
+  validates_presence_of :ticket_type_id
+  #validates_presence_of :ticket_sla_id #not required because it always will be assigned by assign_sla
+  validates_presence_of :created_by_id
+
+  validates_length_of :name, maximum: 255
+
+  
+
+  scope :inclusive, -> { includes(:ticket_category).includes(:ticket_status).includes(:ticket_sla).includes(:location).includes(:users).includes(:person).includes(:parent).includes(:created_by).includes(:ticket_priority).includes(:ticket_type)}
   
   #The database will automatically create the first status of new
   after_update :create_ticket_status_history
   
   #This must be after validation, but before save because saving the record again will cascade status history updates
-  after_validation :assign_sla
+  after_validation :set_sla
+  #before_validation :set_defaults, only: :create
 
+  has_paper_trail
+  paginates_per 50
 
+  def set_defaults
+    self.ticket_status_id = 1
+  end
   
 
   def create_ticket_status_history
 
     #If a new ticket has been updated set its status to response, even if no one did that properly.
-    self.ticket_status_id = 2 if self.ticket_status_id = 1
+    #Don't do this on brand new tickets, which would have had no ticket_status until assigned in above
+    self.ticket_status_id = 2 if self.ticket_status_id = 1 and !self.ticket_status_id_was.nil?
 
     if ticket_status_id_changed? then
       previous_ticket_status_history = TicketStatusHistory.where(:ticket_detail_id => self.id).last
@@ -80,7 +103,7 @@ class TicketDetail < ActiveRecord::Base
     
   end
 
-  def assign_sla
+  def set_sla
     #Find an exactly matching SLA
     sla = TicketSlaAssignment.where(ticket_category_id: self.ticket_category_id, ticket_priority_id: self.ticket_priority_id, ticket_type_id: self.ticket_type_id) 
 
@@ -89,11 +112,18 @@ class TicketDetail < ActiveRecord::Base
       sla = TicketSlaAssignment.where("ticket_category_id IN (?)", self.ticket_category.ancestor_ids).where(ticket_priority_id: self.ticket_priority_id, ticket_type_id: self.ticket_type_id).last
     end
 
-    #If that still doesn't work, set it to Normal
-    #if sla.nil? then sla = TicketSlaAssignment.find(3)
+    #If that still doesn't work, raise an error
+    if sla.nil? then
+      errors.add(:ticket_sla_id, "There is no SLA set for this combination of ticket category, priority and type.  Please contact your helpdesk administrator.  In the meantime, please pick a different combination.")
+    else
+      self.ticket_sla_id = sla.ticket_sla_id
+    end
+  end
+
+  def creator_name
+    #for some reason delegation is not working on this
+
     
-    puts sla
-    self.ticket_sla_id = sla.ticket_sla_id
   end
 
   #####PUT ALL THIS IN A MODULE
@@ -126,11 +156,9 @@ class TicketDetail < ActiveRecord::Base
         tmp_time_accrued[ticket_detail_id] = tmp_time_accrued[ticket_detail_id] || 0
         starttime = time_arr.rows[i][1]
         endtime = time_arr.rows[i][2] || DateTime.now #doing this rather than using CURRENT_TIMESTAMP() in SQL means that daylight saving is handled.
-           
-        puts ticket_detail_id
-
+ 
         tmp_time_accrued[ticket_detail_id] = tmp_time_accrued[ticket_detail_id] + time_accrued(starttime, endtime, openingtime, closingtime)
-        puts tmp_time_accrued[ticket_detail_id]
+       
       end
 
       return tmp_time_accrued
@@ -183,6 +211,8 @@ class TicketDetail < ActiveRecord::Base
     end
 
   end
+
+  
 
   
 

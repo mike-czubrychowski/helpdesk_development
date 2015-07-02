@@ -4,9 +4,21 @@ class Organisation < ActiveRecord::Base
 	belongs_to :ticket_category, inverse_of: :organisations, class_name: "TicketCategory"
 	belongs_to :location, inverse_of: :organisations
 
+	scope :inclusive, -> {includes(:users).includes(:ticket_category).includes(:location)}
+
+	has_paper_trail
+    paginates_per 10
+
+    validates_presence_of :ticket_category_id
+	validates_presence_of :location
+
+	validates_length_of :name, maximum: 50
+    validates_presence_of :name
+
+
 	def ticket_catergories
 	    begin
-	      self.ticket_category
+	      self.ticket_category.subtree
 	    rescue 
 	      nil
 	    end

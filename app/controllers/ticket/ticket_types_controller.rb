@@ -1,9 +1,11 @@
 class TicketTypesController < ApplicationController
+  
+  before_filter :authenticate_user!
+  after_action :verify_authorized
   before_action :set_ticket_type, only: [:show, :edit, :update, :destroy]
+  
+
   before_action :calculate_time_taken, only: [:index, :show, :edit]
-
-
-  respond_to :html
 
   def index
     @ticket_types = TicketType.inclusive
@@ -11,7 +13,6 @@ class TicketTypesController < ApplicationController
   end
 
   def show
-    
   end
 
   def new
@@ -36,6 +37,7 @@ class TicketTypesController < ApplicationController
 
   def destroy
     @ticket_type.destroy
+    authorize @ticket_type
     respond_with(@ticket_type)
   end
 

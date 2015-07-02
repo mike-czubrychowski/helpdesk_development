@@ -8,7 +8,6 @@ class CreateTicketDetails < ActiveRecord::Migration
       t.references :ticket_category, index: true
       t.references :ticket_priority, default: 1
       t.references :ticket_status, index: true
-      t.references :ticket_comment, index: true
       t.references :ticket_sla, index: true, default: 1
       t.string :name, null: false
       t.text :description

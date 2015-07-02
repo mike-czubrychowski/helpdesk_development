@@ -15,6 +15,10 @@ class Location < ActiveRecord::Base
   scope :inclusive, -> {includes(:manager).includes(:ticket_details).includes(:ticket_statuses).includes(:ticket_categories)}#includes(:ticket_comments)
   scope :opentickets, -> {includes(:ticket_details)}
 
+  has_paper_trail
+  paginates_per 50
+
+
   delegate :name, :to => :manager, :allow_nil => true, :prefix => true
   delegate :name, :to => :ticket_categories, :allow_nil => true, :prefix => true
   delegate :name, :to => :ticket_statuses, :allow_nil => true, :prefix => true

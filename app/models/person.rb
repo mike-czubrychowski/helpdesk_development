@@ -4,10 +4,16 @@ class Person < ActiveRecord::Base
 
   has_one :user,            inverse_of: :person
   delegate :name, :to => :store_detail, :allow_nil => true, :prefix => "store"
+  has_many :ticket_details, :through => :user
 
   #alias_method :subordinates, :employees
 
-  scope :inclusive, -> {includes(:store_detail)}
+
+
+  scope :inclusive, -> {includes(:store_detail).includes(:ticket_details)}
+
+  has_paper_trail
+  paginates_per 10
 
   def name
     begin
