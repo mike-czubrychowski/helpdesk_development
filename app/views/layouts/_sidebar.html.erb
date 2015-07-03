@@ -10,7 +10,7 @@
             <h6  class="centered"><%= current_user.location_name %></h6>
               
             <li class="mt">
-                <%= link_to root_path do %>
+                <%= link_to ticket_statistics_path do %>
                     <i class="fa fa-dashboard"></i>
                     <span>Dashboard</span>
                 <% end %>
@@ -22,7 +22,7 @@
                     <span>Priority</span>
                 </a>
                 <ul class="sub">
-                    <% TicketPriority.all.each do |ticket_priority| %>
+                    <% TicketPriority.all.order(order: :desc).each do |ticket_priority| %>
                         <li><%= link_to ticket_priority.name.capitalize, ticket_priority %></li>
                     <% end %>
                 </ul>

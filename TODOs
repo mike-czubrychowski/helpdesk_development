@@ -15,6 +15,7 @@ Finish off controller checking + models
 -remove comment_type from ticket_comment / 
 -prevent editing of closed tickets? only allow re-open before editing?
 -RENAME ticket_sla_assignment to MAPPING??
+-rewrite location/_toolbar partial so it's a bit more sensible
 
 
 Time Taken for breached tickets /

@@ -10,6 +10,7 @@
       	<th>Priority</th>
       	<th>Status</th>
         <th>Time</th>
+        <th>SLA</th>
       	<th>Logged by</th>
       </tr>
     </thead>
@@ -24,13 +25,17 @@
   	        <td><%= link_to ticket_detail.ticket_category_name, ticket_detail.ticket_category %></td>
   	        <td data-order="<%= ticket_detail.ticket_priority_order %>"><%= link_to ticket_detail.ticket_priority_name, ticket_detail.ticket_priority %></td>
   	        <td><%= link_to ticket_detail.ticket_status_name, ticket_detail.ticket_status %></td>
-            
-            <td data-order="<%= time_to_breach(@time_taken[ticket_detail.id], ticket_detail.ticket_sla_breach) %>">
-              
-                <span class = "label <%= breach_label(@time_taken[ticket_detail.id], ticket_detail.ticket_sla_breach, ticket_detail.ticket_sla_warn) %>">
-                  <%= format_time(@time_taken[ticket_detail.id]) %>
-                </span>
-            </td>
+            <% if @time_taken %>
+              <td data-order="<%= time_to_breach(@time_taken[ticket_detail.id], ticket_detail.ticket_sla_breach) %>">
+                
+                  <span class = "label <%= breach_label(@time_taken[ticket_detail.id], ticket_detail.ticket_sla_breach, ticket_detail.ticket_sla_warn) %>">
+                    <%= format_time(@time_taken[ticket_detail.id]) %>
+                  </span>
+              </td>
+            <% else %>
+              <td></td>
+            <% end %>
+            <td><%= ticket_detail.ticket_sla_name %>
   	        <td><%= link_to ticket_detail.person_name, ticket_detail.person %></td>
         </tr>
       <% end %>

@@ -5,6 +5,8 @@ class LocationsController < ApplicationController
 
   before_action :set_location, only: [:show, :edit, :update, :destroy]
   before_action :set_location_category #STI
+
+  before_action :calculate_time_taken, only: [:index, :show, :edit]
   
   # GET /locations
   def index
@@ -75,5 +77,9 @@ class LocationsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def location_params
       params.require(:location).permit(:name, :parent_id, :category, :manager_id)
+    end
+
+    def calculate_time_taken
+      @time_taken = TicketDetail.first.time_taken_all
     end
 end

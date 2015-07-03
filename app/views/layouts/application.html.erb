@@ -10,12 +10,12 @@
             <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
         </div>
         <!--logo start-->
-        <a href="/" class="logo"><b>IT HELPDESK</b></a>
+        <a href="/ticket_details" class="logo"><b>IT HELPDESK</b></a>
         <!--logo end-->
         <div class="top-menu">
           
           <ul class="nav pull-right top-menu">
-                <li><%= render :partial => 'locations/toolbar', :locals => {locations: @locations} %></li>
+                
                 <li><%= link_to 'Sign Out', destroy_user_session_path, :class => "logout fa fa-sign-out" %></li>
 
 

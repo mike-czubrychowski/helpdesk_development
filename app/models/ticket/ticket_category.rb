@@ -2,6 +2,7 @@ class TicketCategory < ActiveRecord::Base
 
 	has_many :ticket_details, inverse_of: :ticket_category
   has_many :organisations,  inverse_of: :ticket_category
+  has_one :ticket_statistic, inverse_of: :ticket_category
 
   
 

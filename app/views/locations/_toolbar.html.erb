@@ -1,14 +1,14 @@
 
 
 <form class="form-inline toolbar">
-  <select id="store_id" class="form-control"  onChange="window.location.replace('http://192.168.16.59:3004/locations/' + document.getElementById('toolbar_store_id').value)">
+  <select id="store_id" class="form-control"  onChange="window.location.replace('http://192.168.16.59:5000/locations/' + document.getElementById('toolbar_store_id').value)">
     <option>ID...</option>
     <% Location.all.each do |location| %>
       <option><%= location.id %></option>
     <% end %>
   </select>
 
-  <select id="store_name" class="form-control" onChange="window.location.replace('http://192.168.16.59:3004/locations/' + document.getElementById('toolbar_store_name').value)">
+  <select id="store_name" class="form-control" onChange="window.location.replace('http://192.168.16.59:5000/locations/' + document.getElementById('toolbar_store_name').value)">
     <option>Store Name...</option>
     <% Location.all.each do |location| %>
       <option value= <%=location.id %>><%= location.name %></option>

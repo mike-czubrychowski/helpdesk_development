@@ -1,58 +1,54 @@
 <div class="row">
-	<div class = "col-md-8 col-xs-12">
-		<h1>ticket_statistics</h1>
-	</div>
-	<div class = "col-md-4 col-xs-12">
-		<h2>
-			<% if can? :create, @ticket_statistics %>
-		        <%= link_to new_ticket_statistic_path, :class => 'btn btn-primary', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
-		            <i class ="fa fa-plus"></i>
-		        <% end -%>
-		    <% end %>
-		</h2>
+	<div class ="col-lg-9 main-chart">
+		<h1>Dashboard</h1>
+		<div class ="row mtbox">
+			
+			<div class = "col-md2 col-sm-2 col-md-offset-1 box0">
+				<div class="box1">
+					<span class = "li_mail"></span>
+					<h3><%= @tickets_open %></h3>
+					<h4> Open Tickets </h4> 
+				</div>
+				<p>Description of what this is</p>
+			</div>
+
+			<div class = "col-md2 col-sm-2 box0">
+				<div class="box1">
+					<span class = "li_lock"></span>
+					<h3><%= @tickets_closed %></h3>
+					<h4> Closed Tickets </h4> 
+				</div>
+				<p>Description of what this is</p>
+			</div>
+
+			<div class = "col-md2 col-sm-2 box0">
+				<div class="box1">
+					<span class = "li_star"></span>
+					<h3><%= @tickets_new %></h3>
+					<h4> New Tickets </h4> 
+				</div>
+				<p>Description of what this is</p>
+			</div>
+
+			<div class = "col-md2 col-sm-2 box0">
+				<div class="box1">
+					<span class = "li_fire"></span>
+					<h3><%= @tickets_critical %></h3>
+					<h4> Critical Tickets </h4> 
+				</div>
+				<p>Description of what this is</p>
+			</div>
+
+			<div class = "col-md2 col-sm-2 box0">
+				<div class="box1">
+					<span class = "li_clock"></span>
+					<h3><%= @tickets_high %></h3>
+					<h4> High Tickets </h4> 
+				</div>
+				<p>Description of what this is</p>
+			</div>
+		</div>
 	</div>
 </div>
 
-<div class="row">
-	<table class="table table-striped table-responsive" id ="ticket_statistics" >
-	  <thead>
-	    <tr>
-		    	<th>Location</th>
-		      	<th></th>
-	    </tr>
-	  </thead>
 
-	  <tbody>
-	    <% @ticket_statistics.each do |ticket_statistic| %>
-	      <tr>
-		        <td><%= ticket_statistic.location %></td>
-	
-	        <td>
-	        	<% if can? :read, @ticket_statistic %>
-		            <%= link_to ticket_statistic_path(@ticket_statistic), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
-		              <i class ="fa fa-eye"></i>
-		            <% end -%>
-		        <% end %>
-		        <% if can? :edit, @ticket_statistic %>
-		            <%= link_to edit_ticket_statistic_path(@ticket_statistic), :class => 'btn btn-primary btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
-		              <i class ="fa fa-edit"></i>
-		            <% end -%>
-		        <% end %>
-		        <% if can? :destroy, @ticket_statistic %>
-				    <%= link_to ticket_statistic_path(@ticket_statistic), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-primary btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
-				      <i class ="fa fa-times"></i>
-				    <% end -%>
-				<% end %>
-	        
-
-	        </td>
-	        
-	      </tr>
-	    <% end %>
-	  </tbody>
-	</table>
-</div>
-<br>
-<br>
-
-<%= link_to 'New Statistic', new_ticket_statistic_path %>
