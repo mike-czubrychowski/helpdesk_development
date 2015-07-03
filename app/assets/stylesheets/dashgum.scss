@@ -1,7 +1,7 @@
 //colors
 $color_boulder_approx: #797979;
 $concrete: #f2f2f2;
-$color_turquoise_blue_approx: #68dff0;
+$color_turquoise_blue_approx: #c1c1c1;
 $white: #fff;
 $color_wild_sand_approx: #f5f5f5;
 $color_rangoon_green_approx: #1a1a1a;
@@ -134,15 +134,18 @@ $url_12: asset-url('login-bg.jpg');
 //original selectors
 //.btn-theme:hover, .btn-theme:focus, .btn-theme:active, .btn-theme.active, .btn-theme, .open .dropdown-toggle.btn-theme
 %extend_1 {
+    
 	color: $white;
-	font-family: $font_0, $font_1;
 	background-color: $color_puerto_rico_approx;
 	border-color: $color_puerto_rico_approx;
+
+
 }
 
 //original selectors
 //.btn-theme02:hover, .btn-theme02:focus, .btn-theme02:active, .btn-theme02.active, .open .dropdown-toggle.btn-theme02
 %extend_2 {
+font-family: $font_0, $font_1;
 	color: $white;
 	background-color: $color_medium_purple_approx;
 	border-color: $color_medium_purple_approx;
@@ -151,6 +154,7 @@ $url_12: asset-url('login-bg.jpg');
 //original selectors
 //.btn-theme03:hover, .btn-theme03:focus, .btn-theme03:active, .btn-theme03.active, .open .dropdown-toggle.btn-theme03
 %extend_3 {
+font-family: $font_0, $font_1;
 	color: $white;
 	background-color: $color_keppel_approx;
 	border-color: $color_keppel_approx;
@@ -159,10 +163,12 @@ $url_12: asset-url('login-bg.jpg');
 //original selectors
 //.btn-theme04:hover, .btn-theme04:focus, .btn-theme04:active, .btn-theme04.active, .open .dropdown-toggle.btn-theme04
 %extend_4 {
+
 	color: $white;
 	background-color: $color_cerise_red_approx;
 	border-color: $color_cerise_red_approx;
 }
+
 
 //original selectors
 //ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:focus
